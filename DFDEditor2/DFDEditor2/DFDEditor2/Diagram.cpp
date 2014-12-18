@@ -57,7 +57,7 @@ void Diagram::SetStartElementforStream(Element *e, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
-			Stream *tempse = (Stream*)(*it);
+			Stream *tempse = (Stream*)e;
 			tempse->setStartElement(*it);
 			break;
 		}
@@ -67,7 +67,7 @@ void Diagram::SetEndElementforStream(Element *e, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
-			Stream *tempse = (Stream*)(*it);
+			Stream *tempse = (Stream*)e;
 			tempse->setEndElement(*it);
 			break;
 		}

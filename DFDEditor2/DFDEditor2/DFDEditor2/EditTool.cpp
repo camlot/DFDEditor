@@ -2,6 +2,7 @@
 #include "EditTool.h"
 #include"Tool.h"
 #include"Element.h"
+#include"DFDStream.h"
 #include"Diagram.h"
 #include"DiagramEditor.h"
 #include"Dlg.h"
@@ -111,11 +112,12 @@ void EditTool::Move(CPoint pos){
 		de->Highlight();
 	}
 	if (currente && currente->isStream()){
-		CPoint p;
-		p.SetPoint(pos.x - 60, pos.y - 40);
-		currentd->SetStartElementforStream(currente, p);
-		p.SetPoint(pos.x + 60, pos.y + 40);
-		currentd->SetEndElementforStream(currente, p);
+		//CPoint p;
+		//p.SetPoint(pos.x - 60, pos.y - 40);
+		Stream *tempse = (Stream*)currente;
+		currentd->SetStartElementforStream(tempse, tempse->getStart());
+		//p.SetPoint(pos.x + 60, pos.y + 40);
+		currentd->SetEndElementforStream(tempse,tempse->getEnd());
 	}
 	else if(currente){
 		currentd->SetElementforStreambyElement(currente, pos);

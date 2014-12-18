@@ -6,15 +6,20 @@ class Stream : public Element
 private:
 	Element *startE;  // 起始点连接的图元
 	Element *endE;  // 终止点连接的图元
-	int a; //长轴
-	int b; //短轴
+	//int a; //长轴
+	//int b; //短轴
+	CPoint start;
+	CPoint end;
 	int controlstate; //0未选中控制点，1左控制点，2右控制点
 public:
 	Stream(int type, CPoint midPoint, CString text);
 	~Stream();
 	int getState();
+	CPoint getStart();
+	CPoint getEnd();
 	bool FindControl(CPoint pos);
 	bool OnsizeControl(CPoint pos);
+	void Offset(CPoint pos0);
 	bool Contains(CPoint pos);
 	bool startisInfieldof(Element *e, CPoint pos);
 	bool endisInfieldof(Element *e, CPoint pos);
