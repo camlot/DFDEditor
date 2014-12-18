@@ -4,8 +4,8 @@
 class Stream : public Element
 {
 private:
-	Element *startE;
-	Element *endE;
+	Element *startE;  // 起始点连接的图元
+	Element *endE;  // 终止点连接的图元
 	int a; //长轴
 	int b; //短轴
 	int controlstate; //0未选中控制点，1左控制点，2右控制点

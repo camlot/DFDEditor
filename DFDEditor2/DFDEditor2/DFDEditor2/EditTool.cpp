@@ -33,8 +33,8 @@ void EditTool::Press(CPoint pos, HWND hWnd){
 	if (d){
 		//this->SetCurrentD(d);
 		de->SetCurrentD(d);
-		d->Find(pos, e);
-		if (e){
+
+		if (d->Find(pos, e)){  // 点中某一图元
 			//this->SetCurrentE(e);
 			de->SetCurrentE(e);
 			de->Highlight();

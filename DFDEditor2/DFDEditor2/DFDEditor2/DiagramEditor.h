@@ -22,27 +22,27 @@ private:
 	CMainFrame *cpMainFrame;
 	CChildFrame *cpChildFrame;
 
-	Element *currente;
-	Diagram *currentd;
-	Tool *currenttool;
-	vector<Diagram*>ds;
-	map<HWND, Diagram*>WindowtoDiagram;
+	Element *currente;  // 指向当前图元
+	Diagram *currentd;  // 指向当前图形
+	Tool *currenttool;  
+	vector<Diagram*> ds;  // 保存所有图形
+	map<HWND, Diagram*> WindowtoDiagram;
 	//map<Element*, Diagram*>ElementtoDiagram;
-	RectangleTool *rt;
-	EllipseTool *et;
-	LineTool *lt;
-	StreamTool *st;
-	EditTool *edt;
-	LookupTool *lkt;
+	RectangleTool *rt;  // 矩形工具类
+	EllipseTool *et;  //  椭圆工具类
+	LineTool *lt;  // 线型工具类
+	StreamTool *st;  // 连接线工具类
+	EditTool *edt;  // 编辑图元工具类
+	LookupTool *lkt;  // 查找路径工具类
 public:
 	DiagramEditor();
 	~DiagramEditor();
-	bool hasCurrentE();
-	void InsertMap(HWND hWnd, Diagram *d);
-	void Menu(int item);
-	void SetCurrentE(Element *e);
-	void SetCurrentD(Diagram *d);
-	void SetCurrentTool(Tool *t);
+	bool hasCurrentE();  // 当前有选中的图元
+	void InsertMap(HWND hWnd, Diagram *d);  // 
+	void Menu(int item);  // 菜单选项（创建何种类型图元）
+	void SetCurrentE(Element *e);  // 设置当前图元
+	void SetCurrentD(Diagram *d);  // 设置当前图形
+	void SetCurrentTool(Tool *t);  // 
 	void ClearCurrentE();
 	void ClearCurrentTool();
 	void AddDiagram();

@@ -119,7 +119,7 @@ void DiagramEditor::Press(CPoint pos){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
 	HWND hWnd = cpChildFrame->m_hWnd;
-	if (!hWnd) AfxMessageBox(_T("Top Window Not found!"));
+	if (!hWnd) AfxMessageBox(_T("Top Window Not Found!"));
 
 	//currenttool->Select(d, hWnd);
 	//SetCurrentD(d);
@@ -130,7 +130,7 @@ void DiagramEditor::RightPress(CPoint pos){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
 	HWND hWnd = cpChildFrame->m_hWnd;
-	if (!hWnd) AfxMessageBox(_T("Top Window Not found!"));
+	if (!hWnd) AfxMessageBox(_T("Top Window Not Found!"));
 
 	//edt->RightPress(pos, hWnd);
 	EditTool *newet = (EditTool*)currenttool;
@@ -140,11 +140,13 @@ void DiagramEditor::DoubleClick(CPoint pos){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
 	HWND hWnd = cpChildFrame->m_hWnd;
-	if (!hWnd) AfxMessageBox(_T("Top Window Not found!"));
+
+	if (!hWnd) AfxMessageBox(_T("Top Window Not Found!"));
 	
 	EditTool *newet = (EditTool*)currenttool;
 	//currenttool->DoubleClick(pos, hWnd);
 	newet->DoubleClick(pos, hWnd);
+
 }
 void DiagramEditor::Release(CPoint pos){
 	currenttool->Release(pos);
