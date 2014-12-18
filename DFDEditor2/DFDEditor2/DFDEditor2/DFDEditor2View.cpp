@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CDFDEditor2View, CView)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDBLCLK()
+	ON_COMMAND(ID_32776, &CDFDEditor2View::OnLookup)
 END_MESSAGE_MAP()
 
 // CDFDEditor2View 构造/析构
@@ -294,6 +295,12 @@ void CDFDEditor2View::OnStream()
 	pMainFrame->de->Menu(4);
 }
 
+void CDFDEditor2View::OnLookup()
+{
+	// TODO:  在此添加命令处理程序代码
+	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	pMainFrame->de->Menu(5);
+}
 
 void CDFDEditor2View::OnRButtonDown(UINT nFlags, CPoint point)
 {
@@ -323,3 +330,5 @@ void CDFDEditor2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->DoubleClick(point);
 }
+
+

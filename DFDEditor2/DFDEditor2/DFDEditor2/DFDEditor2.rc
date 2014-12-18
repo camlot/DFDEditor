@@ -174,6 +174,10 @@ BEGIN
         MENUITEM "数据存储",                        ID_32774
         MENUITEM "数据流",                         ID_32775
     END
+    POPUP "查找"
+    BEGIN
+        MENUITEM "全部路径",                        ID_32776
+    END
     POPUP "帮助(&H)"
     BEGIN
         MENUITEM "关于 DFDEditor2(&A)...",        ID_APP_ABOUT

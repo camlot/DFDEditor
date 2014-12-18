@@ -47,13 +47,16 @@ void DiagramEditor::InsertMap(HWND hWnd, Diagram *d){
 
 void DiagramEditor::Menu(int item){
 	switch (item){
-	case 1: SetCurrentTool(rt);
+	case 1: 
+		SetCurrentTool(rt);
 		break;
 	case 2: SetCurrentTool(et);
 		break;
 	case 3: SetCurrentTool(lt);
 		break;
 	case 4: SetCurrentTool(st);
+		break;
+	case 5: SetCurrentTool(lkt);
 		break;
 	default:;
 	}
@@ -115,7 +118,6 @@ void DiagramEditor::SearchDiagram(HWND hWnd, Diagram *&d){
 }
 void DiagramEditor::Press(CPoint pos){
 	//Diagram *d = NULL;
-
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
 	HWND hWnd = cpChildFrame->m_hWnd;
