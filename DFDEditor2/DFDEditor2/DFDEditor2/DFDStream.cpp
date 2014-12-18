@@ -27,12 +27,28 @@ CPoint Stream::getEnd(){
 	return this->end;
 }
 int Stream::getState(){
-	return 0;
+	return this->controlstate;
 }
-bool Stream::FindControl(CPoint pos){
-	return true;
+void Stream::ContainsPoint(CPoint pos){
+	if (pos.x > this->start.x - 5 && pos.x < this->start.x + 5 && pos.y > start.y -5 && pos.y < start.y + 5)
+	{
+		controlstate = 1;
+	}
+	if (pos.x > this->end.x - 5 && pos.x < this->end.x + 5 && pos.y > end.y - 5 && pos.y < end.y + 5)
+	{
+		controlstate = 2;
+	}
+	
 }
-bool Stream::OnsizeControl(CPoint pos){
+bool Stream::Onsize(CPoint pos){
+	if (controlstate == 1) //选中左控制点
+	{
+		start.SetPoint(pos.x, pos.y);
+	}
+	if (controlstate == 2)//选中右控制点
+	{
+		end.SetPoint(pos.x, pos.y);
+	}
 	return true;
 }
 void Stream::Offset(CPoint pos){
@@ -87,4 +103,9 @@ void Stream::setStartElement(Element *e){
 }
 void Stream::setEndElement(Element *e){
 	this->endE = e;
+}
+
+void Stream::setControstate(int state){
+	this->controlstate = state;
+
 }

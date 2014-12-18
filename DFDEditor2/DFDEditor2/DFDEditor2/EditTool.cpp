@@ -37,6 +37,11 @@ void EditTool::Press(CPoint pos, HWND hWnd){
 
 		if (d->Find(pos, e)){  // 点中某一图元
 			//this->SetCurrentE(e);
+			if (e->isStream()) //如果点击的是流
+			{
+				Stream *str = (Stream*)e;
+				str->ContainsPoint(pos); //如果点击到流的端点，则根据端点设置相应状态位
+			}
 			de->SetCurrentE(e);
 			de->Highlight();
 		}
@@ -107,17 +112,32 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 }
 void EditTool::Move(CPoint pos){
 	if (this->hasCurrentE() && de->hasCurrentE()){
-		//de->UpdatePosition(pos);
-		currente->Offset(pos);
-		de->Highlight();
+		if (currente->isStream())
+		{
+			Stream *t = (Stream*)currente;
+			if (t->getState()!=0)
+			{
+				t->Onsize(pos);
+				de->Highlight();
+			}	
+			else {
+				currente->Offset(pos);
+				de->Highlight();
+			}
+		}
+		
+		else{
+			currente->Offset(pos);
+			de->Highlight();
+		}
+		
 	}
 	if (currente && currente->isStream()){
-		//CPoint p;
-		//p.SetPoint(pos.x - 60, pos.y - 40);
+		
 		Stream *tempse = (Stream*)currente;
 		currentd->SetStartElementforStream(tempse, tempse->getStart());
-		//p.SetPoint(pos.x + 60, pos.y + 40);
-		currentd->SetEndElementforStream(tempse,tempse->getEnd());
+		currentd->SetEndElementforStream(tempse, tempse->getEnd());
+		
 	}
 	else if(currente){
 		currentd->SetElementforStreambyElement(currente, pos);
@@ -134,6 +154,12 @@ void EditTool::Release(CPoint pos){
 	else{
 		currentd->SetElementforStreambyElement(currente, pos);
 	}*/
+
+	if (currente && currente->isStream()){
+		Stream *tempse = (Stream*)currente;
+	     tempse->setControstate(0);
+	}
+	
 }
 void EditTool::RightRelease(CPoint pos){
 	CDlg dlg; 

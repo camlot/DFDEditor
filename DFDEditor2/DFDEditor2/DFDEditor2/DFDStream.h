@@ -17,14 +17,15 @@ public:
 	int getState();
 	CPoint getStart();
 	CPoint getEnd();
-	bool FindControl(CPoint pos);
-	bool OnsizeControl(CPoint pos);
+	void ContainsPoint(CPoint pos);
+	bool Onsize(CPoint pos);
 	void Offset(CPoint pos0);
 	bool Contains(CPoint pos);
 	bool startisInfieldof(Element *e, CPoint pos);
 	bool endisInfieldof(Element *e, CPoint pos);
 	void setStartElement(Element *e);
 	void setEndElement(Element *e);
+	void setControstate(int state);
 };
 
 
