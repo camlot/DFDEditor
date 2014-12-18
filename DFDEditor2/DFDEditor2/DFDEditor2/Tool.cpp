@@ -24,9 +24,9 @@ void Tool::ClearCurrentE(){
 	this->currente = NULL;
 }
 
-void Tool::getDiagramEditor(DiagramEditor *d){
+/*void Tool::getDiagramEditor(DiagramEditor *d){
 	this->de = d;
-}
+}*/
 
 void Tool::Select(Diagram *&d, HWND hWnd){
 	de->SearchDiagram(hWnd, d);

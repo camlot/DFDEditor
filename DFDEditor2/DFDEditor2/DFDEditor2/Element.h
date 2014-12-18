@@ -17,12 +17,12 @@ public:
 	~Element();
 	void SetText(CString s);  // 设置图元文本
 	virtual bool Contains(CPoint pos){ return true; }  // 判定是否被选中
-	virtual bool startisInfieldof(Element *e, CPoint pos){ return false; }
-	virtual bool endisInfieldof(Element *e, CPoint pos){ return false; }
+	//virtual bool startisInfieldof(Element *e, CPoint pos){ return false; }
+	//virtual bool endisInfieldof(Element *e, CPoint pos){ return false; }
 	virtual bool hasSubDiagram(){ return true;}
 	virtual void setSubDiagram(){}
-	virtual void setStartElement(Element *e){}
-	virtual void setEndElement(Element *e){}
+	//virtual void setStartElement(Element *e){}
+	//virtual void setEndElement(Element *e){}
 	bool isProcess();  // 是否是加工（有子图）
 	bool isStream();
 	bool isSource();

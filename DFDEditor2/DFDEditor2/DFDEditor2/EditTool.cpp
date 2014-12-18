@@ -110,9 +110,19 @@ void EditTool::Move(CPoint pos){
 		currente->Offset(pos);
 		de->Highlight();
 	}
+	if (currente && currente->isStream()){
+		CPoint p;
+		p.SetPoint(pos.x - 60, pos.y - 40);
+		currentd->SetStartElementforStream(currente, p);
+		p.SetPoint(pos.x + 60, pos.y + 40);
+		currentd->SetEndElementforStream(currente, p);
+	}
+	else if(currente){
+		currentd->SetElementforStreambyElement(currente, pos);
+	}
 }
 void EditTool::Release(CPoint pos){
-	if (currente->isStream()){
+	/*if (currente->isStream()){
 		CPoint p;
 		p.SetPoint(pos.x - 60, pos.y - 40);
 		currentd->SetStartElementforStream(currente, p);
@@ -121,7 +131,7 @@ void EditTool::Release(CPoint pos){
 	}
 	else{
 		currentd->SetElementforStreambyElement(currente, pos);
-	}
+	}*/
 }
 void EditTool::RightRelease(CPoint pos){
 	CDlg dlg; 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Diagram.h"
 #include"Element.h"
+#include"DFDStream.h"
 
 Diagram::Diagram()
 {
@@ -42,11 +43,12 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->isStream()){
-			if ((*it)->startisInfieldof(e, pos)){
-				(*it)->setStartElement(e);
+			Stream *tempse = (Stream*)(*it);
+			if (tempse->startisInfieldof(e, pos)){
+				tempse->setStartElement(e);
 			}
-			if ((*it)->endisInfieldof(e, pos)){
-				((*it)->setEndElement(e));
+			if (tempse->endisInfieldof(e, pos)){
+				(tempse->setEndElement(e));
 			}
 		}
 	}
@@ -55,7 +57,8 @@ void Diagram::SetStartElementforStream(Element *e, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
-			e->setStartElement(*it);
+			Stream *tempse = (Stream*)(*it);
+			tempse->setStartElement(*it);
 			break;
 		}
 	}
@@ -64,7 +67,8 @@ void Diagram::SetEndElementforStream(Element *e, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
-			e->setEndElement(*it);
+			Stream *tempse = (Stream*)(*it);
+			tempse->setEndElement(*it);
 			break;
 		}
 	}
