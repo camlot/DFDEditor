@@ -83,12 +83,21 @@ void Diagram::Remove(Element *currente){
 	}
 }*/
 
-void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs){
+void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]){
 	vector<Element*>::iterator it;
+	int i = 0;
+	Stream *tempse;
 	for (it = elems.begin(); it != elems.end(); it++){
 		poss.push_back(&(*it)->midPoint);
 		types.push_back((*it)->type);
 		strs.push_back((*it)->text);
+		if ((*it)->isStream()){
+			tempse = (Stream*)(*it);
+			startmidend[i][0] = tempse->getStart();
+			startmidend[i][1] = tempse->getmidPoint();
+			startmidend[i][2] = tempse->getEnd();
+			i++;
+		}
 	}
 }
 void Diagram::InsertMap(Element *e, HWND hWnd){

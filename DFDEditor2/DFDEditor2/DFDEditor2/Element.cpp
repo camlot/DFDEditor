@@ -8,7 +8,9 @@ Element::Element(){
 Element::~Element()
 {
 }
-
+CPoint Element::getmidPoint(){
+	return midPoint;
+}
 void Element::SetText(CString s){ // 设置图元文本
 	this->text = s;
 }

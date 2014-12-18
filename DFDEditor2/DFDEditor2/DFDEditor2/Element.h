@@ -15,6 +15,7 @@ public:
 	Element();
 	//Element(int type, CPoint midPoint, CString text);
 	~Element();
+	CPoint getmidPoint();
 	void SetText(CString s);  // 设置图元文本
 	virtual bool Contains(CPoint pos){ return true; }  // 判定传入点是否在图元内部
 	//virtual bool startisInfieldof(Element *e, CPoint pos){ return false; }
@@ -28,5 +29,5 @@ public:
 	bool isStream();
 	bool isSource();
 	bool isDataStorage();
-	void Offset(CPoint pos);  // 位移（移动图元）
+	virtual void Offset(CPoint pos);  // 位移（移动图元）
 };

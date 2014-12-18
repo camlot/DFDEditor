@@ -30,7 +30,7 @@ public:
 	void SetEndElementforStream(Element *e, CPoint pos);
 	void Remove(Element *currente);
 	//void DrawDiagram(map<CPoint*, int>&drawdiagram);
-	void DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs);
+	void DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]);
 	void InsertMap(Element *e, HWND hWnd);
 };
 

@@ -128,8 +128,8 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 		MemDC.LineTo(x + 60, y + 40);
 		break;
 	case 4: MemDC.MoveTo(x - 60, y - 40);
-		MemDC.LineTo(x, y - 40);
-		MemDC.LineTo(x, y + 40);
+		MemDC.LineTo(x-60, y);
+		MemDC.LineTo(x + 60, y);
 		MemDC.LineTo(x + 60, y + 40);
 		break;
 	default:;
@@ -143,8 +143,10 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 		vector<CPoint*>::iterator it1;
 		vector<int>::iterator it2;
 		vector<CString>::iterator it3;
-		pDoc->d->DrawDiagram(poss, types, strs);
-		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++,it2++,it3++){
+		CPoint startmidend[20][3];
+		pDoc->d->DrawDiagram(poss, types, strs, startmidend);
+		int i = 0;
+		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++,it2++,it3++,i++){
 			switch ((*it2)){
 			case 1: MemDC.Rectangle((*it1)->x - 60, (*it1)->y - 40, (*it1)->x + 60, (*it1)->y + 40);
 				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
@@ -158,11 +160,16 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 				MemDC.LineTo((*it1)->x + 60, (*it1)->y + 40);
 				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
 				break;
-			case 4: MemDC.MoveTo((*it1)->x - 60, (*it1)->y - 40);
+			case 4: /*MemDC.MoveTo((*it1)->x - 60, (*it1)->y - 40);
 				MemDC.LineTo((*it1)->x, (*it1)->y - 40);
 				MemDC.LineTo((*it1)->x, (*it1)->y + 40);
 				MemDC.LineTo((*it1)->x + 60, (*it1)->y + 40);
-				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
+				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));*/
+				//MemDC.MoveTo()
+				MemDC.MoveTo(startmidend[i][0].x, startmidend[i][0].y);
+				MemDC.LineTo(startmidend[i][0].x, startmidend[i][1].y);
+				MemDC.LineTo(startmidend[i][2].x, startmidend[i][1].y);
+				MemDC.LineTo(startmidend[i][2].x, startmidend[i][2].y);
 				break;
 			default:;
 			}
