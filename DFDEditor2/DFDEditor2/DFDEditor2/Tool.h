@@ -25,6 +25,6 @@ public:
 	//virtual void RightPress(CPoint pos, HWND hWnd){}
 	//virtual void RightRelease(CPoint pos){}
 	//virtual void DoubleClick(CPoint pos, HWND hWnd){}
-	void Select(Diagram *&d, HWND hWnd);
+	void Select(Diagram *&d, HWND hWnd);   
 };
 

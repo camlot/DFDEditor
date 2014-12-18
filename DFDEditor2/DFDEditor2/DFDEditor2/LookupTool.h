@@ -1,15 +1,16 @@
 #pragma once
 class Element;
 
-#include "Tool.h"
+#include<vector>
 #include<list>
+#include "Tool.h"
 
 using namespace std;
 
 class LookupTool : public Tool
 {
 private:
-	list<Element*>ElementQueue;
+	vector<list<Element*>> ElementQueue;  //二维数组保存n条路径
 public:
 	LookupTool();
 	LookupTool(DiagramEditor *d);
