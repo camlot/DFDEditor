@@ -1,3 +1,4 @@
+#include<queue>
 #include "stdafx.h"
 #include "LookupTool.h"
 #include "DiagramEditor.h"
@@ -28,16 +29,18 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 		de->SetCurrentD(d);
 		de->SetCurrentD(d);
 
-		if (d->Find(pos, e)){  // 点中某一图元
-			//this->SetCurrentE(e);
+		if (d->Find(pos, e) && e->isSource()){  // 点中Source
+			queue<Element*> tmpElements;
+			
 			de->SetCurrentE(e);
 			de->Highlight();
+			
 		}
-		else{
+		else{  // 未点中Source
 			//this->ClearCurrentE();
-			de->ClearCurrentE();
-			de->ClearCurrentTool();
-			de->Redraw(pos, 0, false);
+			de->ClearCurrentE();  // 清空当前持有的图元
+			de->ClearCurrentTool();  // 释放当前tool
+			de->Redraw(pos, 0, false);  // 不高亮
 		}
 	}
 }

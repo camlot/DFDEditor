@@ -105,3 +105,20 @@ void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CStrin
 void Diagram::InsertMap(Element *e, HWND hWnd){
 	proess2Diagram.insert(pair<Element*, HWND>(e, hWnd));
 }
+
+void Diagram::FindStreams(queue<Element*>& elemq) //传入EndElement传出Stream
+{
+	vector<Element*>::iterator it;
+	Stream* tmp;
+	int endElemNum = elemq.size();
+	for (it = elems.begin(); it != elems.end(),endElemNum > 0; it++){
+		if ((*it)->isStream())
+		{
+			tmp = (Stream*)(*it);
+			if (elemq.front()->midPoint)  ///////////////////
+			{
+
+			}
+		}
+	}
+}

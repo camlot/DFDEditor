@@ -3,6 +3,7 @@ class Element;
 class Stream;
 #pragma warning (disable:4786)
 #include<vector>
+#include <queue>
 #include<map>
 #include<list>
 //#include<string>
@@ -32,6 +33,7 @@ public:
 	//void DrawDiagram(map<CPoint*, int>&drawdiagram);
 	void DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]);
 	void InsertMap(Element *e, HWND hWnd);
+	void FindStreams(queue<Element*>& elemq);  // 找到连接线
 };
 
 
