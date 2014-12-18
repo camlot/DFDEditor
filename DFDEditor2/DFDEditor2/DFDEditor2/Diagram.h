@@ -26,8 +26,8 @@ public:
 	bool FindStream(Element *e, list<Element*>&ElementQueue);
 	HWND SearchWnd(Element *e);
 	void SetElementforStreambyElement(Element *e, CPoint pos); // e是除stream类型其他类型时使用
-	void SetStartElementforStream(Element *e, CPoint pos);  // e是stream类型时使用
-	void SetEndElementforStream(Element *e, CPoint pos);
+	void SetStartElementforStream(Stream *se, CPoint pos);  // e是stream类型时使用
+	void SetEndElementforStream(Stream *se, CPoint pos);
 	void Remove(Element *currente);
 	//void DrawDiagram(map<CPoint*, int>&drawdiagram);
 	void DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]);

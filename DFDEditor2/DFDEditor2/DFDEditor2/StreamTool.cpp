@@ -34,9 +34,10 @@ void StreamTool::CreateElement(CPoint pos, Element *&e){
 	e = new Stream(4, pos, s);
 	if (e->isStream()){
 		p.SetPoint(pos.x - 60, pos.y - 40);
-		currentd->SetStartElementforStream(e, p);
+		Stream *tempse = (Stream*)e;
+		currentd->SetStartElementforStream(tempse, p);
 		p.SetPoint(pos.x + 60, pos.y + 40);
-		currentd->SetEndElementforStream(e, p);
+		currentd->SetEndElementforStream(tempse, p);
 	}
 }
 

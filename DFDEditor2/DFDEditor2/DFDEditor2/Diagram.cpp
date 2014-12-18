@@ -53,22 +53,24 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 		}
 	}
 }
-void Diagram::SetStartElementforStream(Element *e, CPoint pos){
+void Diagram::SetStartElementforStream(Stream *se, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
-			Stream *tempse = (Stream*)e;
-			tempse->setStartElement(*it);
+			//Stream *tempse = (Stream*)e;
+			//tempse->setStartElement(*it);
+			se->setStartElement(*it);
 			break;
 		}
 	}
 }
-void Diagram::SetEndElementforStream(Element *e, CPoint pos){
+void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
-			Stream *tempse = (Stream*)e;
-			tempse->setEndElement(*it);
+			//Stream *tempse = (Stream*)e;
+			//tempse->setEndElement(*it);
+			se->setEndElement(*it);
 			break;
 		}
 	}

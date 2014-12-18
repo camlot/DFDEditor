@@ -146,7 +146,7 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 		CPoint startmidend[20][3];
 		pDoc->d->DrawDiagram(poss, types, strs, startmidend);
 		int i = 0;
-		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++,it2++,it3++,i++){
+		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++,it2++,it3++){
 			switch ((*it2)){
 			case 1: MemDC.Rectangle((*it1)->x - 60, (*it1)->y - 40, (*it1)->x + 60, (*it1)->y + 40);
 				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
@@ -170,6 +170,7 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 				MemDC.LineTo(startmidend[i][0].x, startmidend[i][1].y);
 				MemDC.LineTo(startmidend[i][2].x, startmidend[i][1].y);
 				MemDC.LineTo(startmidend[i][2].x, startmidend[i][2].y);
+				i++;
 				break;
 			default:;
 			}
