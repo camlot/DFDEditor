@@ -16,7 +16,7 @@ public:
 	//Element(int type, CPoint midPoint, CString text);
 	~Element();
 	void SetText(CString s);  // 设置图元文本
-	virtual bool Contains(CPoint pos){ return true; }  // 判定是否被选中
+	virtual bool Contains(CPoint pos){ return true; }  // 判定传入点是否在图元内部
 	virtual bool startisInfieldof(Element *e, CPoint pos){ return false; }
 	virtual bool endisInfieldof(Element *e, CPoint pos){ return false; }
 	virtual bool hasSubDiagram(){ return true;}
