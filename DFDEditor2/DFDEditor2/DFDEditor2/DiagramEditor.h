@@ -26,7 +26,7 @@ private:
 	Diagram *currentd;  // 指向当前图形
 	Tool *currenttool;  
 	vector<Diagram*> ds;  // 保存所有图形
-	map<HWND, Diagram*> WindowtoDiagram;
+	map<HWND, Diagram*> WindowtoDiagram;  // 窗口句柄对应图形的映射
 	//map<Element*, Diagram*>ElementtoDiagram;
 	RectangleTool *rt;  // 矩形工具类
 	EllipseTool *et;  //  椭圆工具类
@@ -38,15 +38,15 @@ public:
 	DiagramEditor();
 	~DiagramEditor();
 	bool hasCurrentE();  // 当前有选中的图元
-	void InsertMap(HWND hWnd, Diagram *d);  // 
+	void InsertMap(HWND hWnd, Diagram *d);  // 创建句柄与图形映射
 	void Menu(int item);  // 菜单选项（创建何种类型图元）
 	void SetCurrentE(Element *e);  // 设置当前图元
 	void SetCurrentD(Diagram *d);  // 设置当前图形
 	void SetCurrentTool(Tool *t);  // 
 	void ClearCurrentE();
 	void ClearCurrentTool();
-	void AddDiagram();
-	void SearchDiagram(HWND hWnd, Diagram *&d);
+	void AddDiagram();  // 新建图形
+	void SearchDiagram(HWND hWnd, Diagram *&d);  // 根据句柄查找对应图形并返回
 	void Press(CPoint pos);
 	void RightPress(CPoint pos);
 	void DoubleClick(CPoint pos);

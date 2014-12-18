@@ -100,7 +100,7 @@ void DiagramEditor::AddDiagram(){
 	Diagram *d = new Diagram();
 	HWND hWnd = cpChildFrame->m_hWnd;
 
-	ds.push_back(d);
+	ds.push_back(d);  // 存入图形数组中
 	this->InsertMap(hWnd, d);
 	SetCurrentD(d);
 	currenttool->SetCurrentD(d);

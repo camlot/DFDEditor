@@ -26,8 +26,9 @@ public:
 	//virtual void setStartElement(Element *e){}
 	//virtual void setEndElement(Element *e){}
 	bool isProcess();  // 是否是加工（有子图）
-	bool isStream();
-	bool isSource();
-	bool isDataStorage();
+
+	bool isStream();   // 是否是流（连接线）
+	bool isSource();  // 是否是源（查找子图的终点）
+	bool isDataStorage();  // 是否是存储
 	virtual void Offset(CPoint pos);  // 位移（移动图元）
 };
