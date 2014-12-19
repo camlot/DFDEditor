@@ -90,9 +90,15 @@ bool Stream::endisInfieldof(Element *e, CPoint pos){
 		else return false;
 	}
 }
-bool Stream::Contains(CPoint pos){
-	if (pos.x >= this->start.x && pos.x <= this->end.x &&
-		pos.y >= this->start.y && pos.y <= this->end.y){
+bool Stream::Contains(CPoint pos){ //移动的时候需要找mid点，end点和start点的最小和最大界，然后判断是否包含
+
+	int Maxx = (start.x > this->getmidPoint().x ? (start.x > end.x ? start.x : end.x) : (this->getmidPoint().x > end.x ? this->getmidPoint().x : end.x));
+	int Maxy = (start.y > this->getmidPoint().y ? (start.y > end.y ? start.y : end.y) : (this->getmidPoint().y > end.y ? this->getmidPoint().y : end.y));
+	int Minx = (start.x < this->getmidPoint().x ? (start.x < end.x ? start.x : end.x) : (this->getmidPoint().x < end.x ? this->getmidPoint().x : end.x));
+	int Miny = (start.y < this->getmidPoint().y ? (start.y < end.y ? start.y : end.y) : (this->getmidPoint().y < end.y ? this->getmidPoint().y : end.y));
+
+	if (pos.x >= Minx && pos.x <= Maxx &&
+		pos.y >=Miny && pos.y <=Maxy){
 		return true;
 	}
 	else return false;
