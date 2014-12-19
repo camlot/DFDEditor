@@ -32,11 +32,11 @@ int Stream::getState(){
 void Stream::ContainsPoint(CPoint pos){
 	if (pos.x > this->start.x - 5 && pos.x < this->start.x + 5 && pos.y > start.y -5 && pos.y < start.y + 5)
 	{
-		controlstate = 1;
+		this->setControstate(1);
 	}
 	if (pos.x > this->end.x - 5 && pos.x < this->end.x + 5 && pos.y > end.y - 5 && pos.y < end.y + 5)
 	{
-		controlstate = 2;
+		this->setControstate(2);
 	}
 	
 }
@@ -102,7 +102,14 @@ bool Stream::Contains(CPoint pos){ //移动的时候需要找mid点，end点和start点的最小
 		return true;
 	}
 	else return false;
-	
+}
+bool Stream::CompareStartElementWith(Element *e){
+	if (this->startE == e) return true;
+	else return false;
+}
+bool Stream::CompareEndElementWith(Element *e){
+	if (this->endE == e) return true;
+	else return false;
 }
 void Stream::setStartElement(Element *e){
 	this->startE = e;

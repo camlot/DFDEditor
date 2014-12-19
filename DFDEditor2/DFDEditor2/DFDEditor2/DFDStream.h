@@ -21,6 +21,8 @@ public:
 	bool Onsize(CPoint pos);
 	void Offset(CPoint pos0);
 	bool Contains(CPoint pos);
+	bool CompareStartElementWith(Element *e);
+	bool CompareEndElementWith(Element *e);
 	bool startisInfieldof(Element *e, CPoint pos);
 	bool endisInfieldof(Element *e, CPoint pos);
 	void setStartElement(Element *e);

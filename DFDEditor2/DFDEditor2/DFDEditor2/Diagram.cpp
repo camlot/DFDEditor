@@ -44,11 +44,19 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->isStream()){
 			Stream *tempse = (Stream*)(*it);
-			if (tempse->startisInfieldof(e, pos)){
-				tempse->setStartElement(e);
+			if (tempse->CompareStartElementWith(e) && !tempse->startisInfieldof(e, pos)){
+				tempse->setStartElement(NULL);
 			}
-			if (tempse->endisInfieldof(e, pos)){
-				(tempse->setEndElement(e));
+			else if (tempse->CompareEndElementWith(e) && !tempse->endisInfieldof(e, pos)){
+				tempse->setEndElement(NULL);
+			}
+			else{
+				if (tempse->startisInfieldof(e, pos)){
+					tempse->setStartElement(e);
+				}
+				if (tempse->endisInfieldof(e, pos)){
+					(tempse->setEndElement(e));
+				}
 			}
 		}
 	}
@@ -56,22 +64,26 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 void Diagram::SetStartElementforStream(Stream *se, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
-		if ((*it)->Contains(pos)){
-			//Stream *tempse = (Stream*)e;
-			//tempse->setStartElement(*it);
-			se->setStartElement(*it);
-			break;
+		if (!(*it)->isStream() && (*it) != se){
+			if (se->CompareStartElementWith((*it)) && !(*it)->Contains(pos)){
+				se->setStartElement(NULL);
+			}
+			else if ((*it)->Contains(pos)){
+				se->setStartElement(*it);
+			}
 		}
 	}
 }
 void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
-		if ((*it)->Contains(pos)){
-			//Stream *tempse = (Stream*)e;
-			//tempse->setEndElement(*it);
-			se->setEndElement(*it);
-			break;
+		if (!(*it)->isStream() && (*it) != se){
+			if (se->CompareEndElementWith((*it)) && !(*it)->Contains(pos)){
+				se->setEndElement(NULL);
+			}
+			else if ((*it)->Contains(pos)){
+				se->setEndElement(*it);
+			}
 		}
 	}
 }
@@ -115,7 +127,7 @@ void Diagram::FindStreams(queue<Element*>& elemq) //传入EndElement传出Stream
 		if ((*it)->isStream())
 		{
 			tmp = (Stream*)(*it);
-			if (elemq.front()->midPoint)  ///////////////////
+			if (&elemq.front()->midPoint)  ///////////////////
 			{
 
 			}

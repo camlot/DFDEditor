@@ -132,7 +132,7 @@ void EditTool::Move(CPoint pos){
 		}
 		
 	}
-	if (currente && currente->isStream()){
+	/*if (currente && currente->isStream()){
 		
 		Stream *tempse = (Stream*)currente;
 		currentd->SetStartElementforStream(tempse, tempse->getStart());
@@ -141,7 +141,7 @@ void EditTool::Move(CPoint pos){
 	}
 	else if(currente){
 		currentd->SetElementforStreambyElement(currente, pos);
-	}
+	}*/
 }
 void EditTool::Release(CPoint pos){
 	/*if (currente->isStream()){
@@ -154,7 +154,17 @@ void EditTool::Release(CPoint pos){
 	else{
 		currentd->SetElementforStreambyElement(currente, pos);
 	}*/
+	if (currente && currente->isStream()){
 
+		Stream *tempse = (Stream*)currente;
+		currentd->SetStartElementforStream(tempse, tempse->getStart());
+		currentd->SetEndElementforStream(tempse, tempse->getEnd());
+
+	}
+	else if (currente){
+		currentd->SetElementforStreambyElement(currente, pos);
+	}
+	else{}
 	if (currente && currente->isStream()){
 		Stream *tempse = (Stream*)currente;
 	     tempse->setControstate(0);
