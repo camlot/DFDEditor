@@ -11,6 +11,9 @@ Element::~Element()
 CPoint Element::getmidPoint(){
 	return midPoint;
 }
+CString Element::getText(){
+	return text;
+}
 void Element::SetText(CString s){ // 设置图元文本
 	this->text = s;
 }
@@ -30,6 +33,6 @@ bool Element::isDataStorage(){
 	if (this->type == 3) return true;
 	else return false;
 }
-void Element::Offset(CPoint pos){ // 位移（移动图元）
-	this->midPoint = pos;
+void Element::Offset(CPoint pos, CPoint oldpos){ // 位移（移动图元）
+	this->midPoint += pos - oldpos;
 }

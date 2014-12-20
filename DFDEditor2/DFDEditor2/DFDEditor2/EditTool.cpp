@@ -3,6 +3,7 @@
 #include"Tool.h"
 #include"Element.h"
 #include"DFDStream.h"
+#include"DFDProcess.h"
 #include"Diagram.h"
 #include"DiagramEditor.h"
 #include"Dlg.h"
@@ -44,13 +45,15 @@ void EditTool::Press(CPoint pos, HWND hWnd){
 				str->ContainsPoint(pos); //如果点击到流的端点，则根据端点设置相应状态位
 			}
 			de->SetCurrentE(e);
-			de->Highlight();
+			//de->Highlight();
+			de->Redraw(false);
 		}
 		else{
 			//this->ClearCurrentE();
-			//de->ClearCurrentE();
-			//de->ClearCurrentTool();
-			de->Redraw(pos, 0, false);  // 释放highlight
+			de->ClearCurrentE();
+			de->ClearCurrentTool();
+			//de->Redraw(pos, 0, false);
+			de->Redraw(false); // 释放highlight
 		}
 	}
 
@@ -67,13 +70,15 @@ void EditTool::RightPress(CPoint pos, HWND hWnd){
 		if (e){
 			//this->SetCurrentE(e);
 			de->SetCurrentE(e);
-			de->Highlight();
+			//de->Highlight();
+			de->Redraw(false);
 		}
 		else{
 			//this->ClearCurrentE();
 			de->ClearCurrentE();
 			de->ClearCurrentTool();
-			de->Redraw(pos, 0, false);
+			//de->Redraw(pos, 0, false);
+			de->Redraw(false);
 		}
 	}
 
@@ -91,10 +96,13 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 		if (e){
 			//this->SetCurrentE(e);
 			de->SetCurrentE(e);
-			de->Highlight();
+			//de->Highlight();
+			de->Redraw(false);
 			d = NULL;
-			if (e->isProcess()){  // 如果该图元是Process
-				if (e->hasSubDiagram()){
+
+			if (e->isProcess()){ // 如果该图元是Process
+				DFDProcess *temppe = (DFDProcess*)e;
+				if (temppe->hasSubDiagram()){
 					h = de->SearchDiagramtoProcess(d);
 					this->OpenDiagramtoProcess(h, d);
 				}
@@ -107,11 +115,12 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 			//this->ClearCurrentE();
 			de->ClearCurrentE();
 			de->ClearCurrentTool();
-			de->Redraw(pos, 0, false);
+			//de->Redraw(pos, 0, false);
+			de->Redraw(false);
 		}
 	}
 }
-void EditTool::Move(CPoint pos){
+void EditTool::Move(CPoint pos, CPoint oldpos){
 	if (this->hasCurrentE() && de->hasCurrentE()){
 		if (currente->isStream())
 		{
@@ -119,21 +128,24 @@ void EditTool::Move(CPoint pos){
 			if (t->getState()!=0)
 			{
 				t->Onsize(pos);
-				de->Highlight();
+				//de->Highlight();
+				de->Redraw(false);
 			}	
 			else {
-				currente->Offset(pos);
-				de->Highlight();
+				currente->Offset(pos, oldpos);
+				//de->Highlight();
+				de->Redraw(false);
 			}
 		}
 		
 		else{
-			currente->Offset(pos);
-			de->Highlight();
+			currente->Offset(pos, oldpos);
+			//de->Highlight();
+			de->Redraw(false);
 		}
 		
 	}
-	if (currente && currente->isStream()){
+	/*if (currente && currente->isStream()){
 		
 		Stream *tempse = (Stream*)currente;
 		currentd->SetStartElementforStream(tempse, tempse->getStart());
@@ -142,7 +154,7 @@ void EditTool::Move(CPoint pos){
 	}
 	else if(currente){
 		currentd->SetElementforStreambyElement(currente, pos);
-	}
+	}*/
 }
 void EditTool::Release(CPoint pos){
 	/*if (currente->isStream()){
@@ -155,7 +167,17 @@ void EditTool::Release(CPoint pos){
 	else{
 		currentd->SetElementforStreambyElement(currente, pos);
 	}*/
+	if (currente && currente->isStream()){
 
+		Stream *tempse = (Stream*)currente;
+		currentd->SetStartElementforStream(tempse, tempse->getStart());
+		currentd->SetEndElementforStream(tempse, tempse->getEnd());
+
+	}
+	else if (currente){
+		currentd->SetElementforStreambyElement(currente, pos);
+	}
+	else{}
 	if (currente && currente->isStream()){
 		Stream *tempse = (Stream*)currente;
 	     tempse->setControstate(0);
@@ -169,7 +191,8 @@ void EditTool::RightRelease(CPoint pos){
 		//de->UpdateText(dlg.newtext);
 		currente->SetText(dlg.newtext);
 	}
-	de->Highlight();
+	//de->Highlight();
+	de->Redraw(false);
 
 }
 void EditTool::Remove(Element *currente){
@@ -184,7 +207,8 @@ void EditTool::CreateNewDiagram(){
 	if (!hWnd) AfxMessageBox(_T("Top Window Not found!"));
 
 	oldD->InsertMap(currente, hWnd);
-	currente->setSubDiagram();
+	DFDProcess *temppe = (DFDProcess*)currente;
+	temppe->setSubDiagram();
 	//this->ClearCurrentE();
 	de->ClearCurrentE();
 }
@@ -194,6 +218,7 @@ void EditTool::OpenDiagramtoProcess(HWND hWnd, Diagram *d){
 	ShowWindow(hWnd, SW_SHOWNORMAL);
 
 	//this->SetCurrentD(d);
+	de->ClearCurrentE();
 	de->SetCurrentD(d);
-	de->Redraw();
+	de->Redraw(false);
 }

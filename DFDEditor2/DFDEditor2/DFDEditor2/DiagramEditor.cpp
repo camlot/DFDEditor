@@ -7,6 +7,7 @@
 #include"StreamTool.h"
 #include"EditTool.h"
 #include"LookupTool.h"
+#include"DFDStream.h"
 #include"Element.h"
 #include"Diagram.h"
 #include"MainFrm.h"
@@ -21,6 +22,8 @@ DiagramEditor::DiagramEditor()
 	currenttool = NULL;
 	cpMainFrame = NULL;
 	cpChildFrame = NULL;
+	//cpDoc = NULL;
+	//cpView = NULL;
 
 	rt = new RectangleTool(this);
 	et = new EllipseTool(this);
@@ -46,6 +49,7 @@ void DiagramEditor::InsertMap(HWND hWnd, Diagram *d){
 }
 
 void DiagramEditor::Menu(int item){
+	this->ClearCurrentE();
 	switch (item){
 	case 1: 
 		SetCurrentTool(rt);
@@ -97,6 +101,7 @@ void DiagramEditor::ClearCurrentTool(){
 void DiagramEditor::AddDiagram(){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
+	CDFDEditor2Doc *cpDoc = (CDFDEditor2Doc*)cpChildFrame->GetActiveDocument();
 	Diagram *d = new Diagram();
 	HWND hWnd = cpChildFrame->m_hWnd;
 
@@ -104,6 +109,7 @@ void DiagramEditor::AddDiagram(){
 	this->InsertMap(hWnd, d);
 	SetCurrentD(d);
 	currenttool->SetCurrentD(d);
+	cpDoc->SetDiagram(d);
 }
 void DiagramEditor::SearchDiagram(HWND hWnd, Diagram *&d){
 	map<HWND, Diagram*>::iterator it;
@@ -174,13 +180,11 @@ void DiagramEditor::RightRelease(CPoint pos){
 void DiagramEditor::Remove(){
 
 }
-void DiagramEditor::Redraw(CPoint pos,int type, bool highlight){
-
+/*void DiagramEditor::Redraw(CPoint pos,int type, bool highlight){
 	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
 	cpView->SetXY(pos.x, pos.y, type, highlight);
 	cpView->GetDocument()->d = currentd;
 	cpView->Invalidate();
-
 }
 void DiagramEditor::Redraw(){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
@@ -188,23 +192,177 @@ void DiagramEditor::Redraw(){
 	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
 	cpView->GetDocument()->d = currentd;
 	cpView->Invalidate();
+}*/
+void DiagramEditor::Redraw(bool original){
+	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
+	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
+	CDFDEditor2Doc *cpDoc = (CDFDEditor2Doc*)cpChildFrame->GetActiveDocument();
+	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
+	CDC *pDC = new CDC();
+	//cpView->SetPos(pos);
+	cpDoc->SetOri(original);
+	//cpDoc->SetDiagram(currentd);
+	//cpView->GetDocument()->d = currentd;
+	cpDoc->SetDiagram(currentd);  // 修改当前活动窗口文档类Doc中的对应图形
+	cpDoc->SetElement(currente);  // 修改当前活动窗口文档类Doc中的对应活动图元
+	cpView->Invalidate();  // 重绘当前活动窗口
+	//cpView->UpdateWindow();
+	//cpView->OnDraw(pDC);
 }
-void DiagramEditor::Highlight(){
-	this->Redraw(currente->midPoint, currente->type, true);
-}
-void DiagramEditor::Move(CPoint pos){
-	currenttool->Move(pos);
-}
-void DiagramEditor::Focus(CPoint pos, Element *e){
+void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos, CDC *pDC){
+	//cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
+	//cpDoc = (CDFDEditor2Doc*)cpChildFrame->GetActiveDocument();
+	//cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
+	if (!currente && original && (currenttool == rt || currenttool == et || currenttool == lt || currenttool == st)){
+		this->DrawOriginal(pDC, pos);  //需要各种createtool的头一个操作是clearelement 
+	}
+	if (docd){   // 遍历当前窗口对应的图形，画出所有图元
+		this->SetCurrentD(docd);
+		CPen *pen = new CPen(PS_SOLID, 1, RGB(0, 0, 0));
+		pDC->SelectObject(pen);
+		vector<CPoint>poss;
+		vector<int>types;
+		vector<CString>strs;
+		vector<CPoint>::iterator it1;
+		vector<int>::iterator it2;
+		vector<CString>::iterator it3;
+		CPoint startmidend[20][3];
+		docd->DrawDiagram(poss, types, strs, startmidend);
+		int i = 0;
+		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++, it2++, it3++){
+			switch ((*it2)){
+			case 1: 
+				pDC->Rectangle((*it1).x - 60, (*it1).y - 40, (*it1).x + 60, (*it1).y + 40);
+				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
+				break;
+			case 2: 
+				pDC->Ellipse((*it1).x - 50, (*it1).y - 50, (*it1).x + 50, (*it1).y + 50);
+				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
+				break;
+			case 3: 
+				pDC->MoveTo((*it1).x - 60, (*it1).y + 20);
+				pDC->LineTo((*it1).x + 60, (*it1).y + 20);
+				pDC->MoveTo((*it1).x - 60, (*it1).y + 40);
+				pDC->LineTo((*it1).x + 60, (*it1).y + 40);
+				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
+				break;
+			case 4:
+				pDC->MoveTo(startmidend[i][0].x, startmidend[i][0].y);
+				pDC->LineTo(startmidend[i][0].x, startmidend[i][1].y);
+				pDC->LineTo(startmidend[i][2].x, startmidend[i][1].y);
+				pDC->LineTo(startmidend[i][2].x, startmidend[i][2].y);
+				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
+				i++;
+				break;
+			default:;
+			}
+			pDC->TextOutW((*it1).x - 20, (*it1).y - 10, (*it3));
+		}
+	}
+	if (doce){
+		this->SetCurrentE(doce);
+		this->Highlight(pDC);
+	}
+	//if (currente && cpChildFrame == (CChildFrame*)cpMainFrame->GetActiveFrame()){
+		//this->Highlight(pDC);
+	//}
 
+}
+void DiagramEditor::DrawOriginal(CDC *pDC,CPoint pos){
+	//if (highlight){
+		//pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
+		//MemDC.SelectObject(pen);
+	//}
+	if (currenttool == rt){
+		pDC->Rectangle(pos.x - 60, pos.y - 40, pos.x + 60, pos.y + 40);
+	}
+	else if (currenttool == et){
+		pDC->Ellipse(pos.x - 50, pos.y - 50, pos.x + 50, pos.y + 50);
+	}
+	else if (currenttool == lt){
+		pDC->MoveTo(pos.x - 60, pos.y + 20);
+		pDC->LineTo(pos.x + 60, pos.y + 20);
+		pDC->MoveTo(pos.x - 60, pos.y + 40);
+		pDC->LineTo(pos.x + 60, pos.y + 40);
+	}
+	else if (currenttool == st){
+		pDC->MoveTo(pos.x - 60, pos.y - 40);
+		pDC->LineTo(pos.x - 60, pos.y);
+		pDC->LineTo(pos.x + 60, pos.y);
+		pDC->LineTo(pos.x + 60, pos.y + 40);
+	}
+	else{}
+	/*switch (type){
+	case 1: pDC->Rectangle(pos.x - 60, pos.y - 40, pos.x + 60, pos.y + 40);
+		break;
+	case 2: pDC->Ellipse(pos.x - 50, pos.y - 50, pos.x + 50, pos.y + 50);
+		break;
+	case 3: pDC->MoveTo(pos.x - 60, pos.y + 20);
+		pDC->LineTo(pos.x + 60, pos.y + 20);
+		pDC->MoveTo(pos.x - 60, pos.y + 40);
+		pDC->LineTo(pos.x + 60, pos.y + 40);
+		break;
+	case 4: pDC->MoveTo(pos.x - 60, pos.y - 40);
+		pDC->LineTo(pos.x - 60, pos.y);
+		pDC->LineTo(pos.x + 60, pos.y);
+		pDC->LineTo(pos.x + 60, pos.y + 40);
+		break;
+	default:;
+	}*/
+}
+/*void DiagramEditor::Highlight(){
+	this->Redraw(currente->midPoint, currente->type, true);
+}*/
+void DiagramEditor::Highlight(CDC *pDC){
+	CPen *pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
+	pDC->SelectObject(pen);
+	CPoint mp = currente->getmidPoint();
+	if (currente->isSource()){
+		pDC->Rectangle(mp.x - 60, mp.y - 40, mp.x + 60, mp.y + 40);
+	}
+	else if (currente->isProcess()){
+		pDC->Ellipse(mp.x - 50, mp.y - 50, mp.x + 50, mp.y + 50);
+	}
+	else if (currente->isDataStorage()){
+		pDC->MoveTo(mp.x - 60, mp.y + 20);
+		pDC->LineTo(mp.x + 60, mp.y + 20);
+		pDC->MoveTo(mp.x - 60, mp.y + 40);
+		pDC->LineTo(mp.x + 60, mp.y + 40);
+	}
+	else{
+		Stream *tempse = (Stream*)currente;
+		CPoint start = tempse->getStart();
+		CPoint end = tempse->getEnd();
+		CPoint mid = tempse->getmidPoint();
+		pDC->MoveTo(start.x, start.y);
+		pDC->LineTo(start.x, mid.y);
+		pDC->LineTo(end.x, mid.y);
+		pDC->LineTo(end.x, end.y);
+		this->Focus(pDC);
+	}
+	pDC->TextOutW(mp.x - 20, mp.y - 10, currente->getText());
+}
+void DiagramEditor::Move(CPoint pos, CPoint oldpos){
+	currenttool->Move(pos, oldpos);
+}
+void DiagramEditor::Focus(CDC *pDC){
+	Stream *tempse = (Stream*)currente;
+	CPen *pen = new CPen(PS_SOLID, 2, RGB(255, 0, 0));
+	pDC->SelectObject(pen);
+	pDC->Rectangle(tempse->getStart().x - 5, tempse->getStart().y - 5, tempse->getStart().x + 5, tempse->getStart().y + 5);
+	//pen->CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
+	pen = new CPen(PS_SOLID, 2, RGB(0, 0, 255));
+	pDC->SelectObject(pen);
+	pDC->Rectangle(tempse->getEnd().x - 5, tempse->getEnd().y - 5, tempse->getEnd().x + 5, tempse->getEnd().y + 5);
 }
 void DiagramEditor::EndCreate(Element *e){
 	//currentd->add(e);
 	//currenttool->SetCurrentE(e);
 	this->SetCurrentE(e);
-	Highlight();
-	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
-	cpView->Invalidate();
+	//Highlight();
+	this->Redraw(false);
+	//CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
+	//cpView->Invalidate();
 }
 /*void DiagramEditor::UpdateText(CString s){
 	currente->SetText(s);

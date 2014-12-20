@@ -23,7 +23,8 @@ void StreamTool::Press(CPoint pos,HWND hWnd){
 	if (d){
 		//SetCurrentD(d);
 		de->SetCurrentD(d);
-		de->Redraw(pos, 4, false);
+		//de->Redraw(pos, 4, false);
+		de->Redraw(true);
 	}
 }
 
@@ -43,5 +44,6 @@ void StreamTool::CreateElement(CPoint pos, Element *&e){
 }
 
 void StreamTool::Update(CPoint pos){
-	de->Redraw(pos, 4, false);
+	//de->Redraw(pos, 4, false);
+	de->Redraw(true);
 }

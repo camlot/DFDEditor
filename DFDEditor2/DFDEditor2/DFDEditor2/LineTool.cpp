@@ -27,7 +27,8 @@ void LineTool::Press(CPoint pos, HWND hWnd){
 	if (d){
 		//SetCurrentD(d);
 		de->SetCurrentD(d);
-		de->Redraw(pos, 3, false);
+		//de->Redraw(pos, 3, false);
+		de->Redraw(true);
 	}
 }
 void LineTool::CreateElement(CPoint pos, Element *&e){
@@ -38,5 +39,6 @@ void LineTool::CreateElement(CPoint pos, Element *&e){
 	currentd->SetElementforStreambyElement(e, pos);
 }
 void LineTool::Update(CPoint pos){
-	de->Redraw(pos, 3, false);
+	//de->Redraw(pos, 3, false);
+	de->Redraw(true);
 }

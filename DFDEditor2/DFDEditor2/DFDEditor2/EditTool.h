@@ -13,7 +13,7 @@ public:
 	void Press(CPoint pos, HWND hWnd);  // 
 	void RightPress(CPoint pos, HWND hWnd);  // 右击->修改名字
 	void DoubleClick(CPoint pos, HWND hWnd);  // 双击->创建子图
-	void Move(CPoint pos);  // 移动图元
+	void Move(CPoint pos, CPoint oldpos);  // 移动图元
 	void Release(CPoint pos);  //
 	void RightRelease(CPoint pos);
 	void Remove(Element *currente);

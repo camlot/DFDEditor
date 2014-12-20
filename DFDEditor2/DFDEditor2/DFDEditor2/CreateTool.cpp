@@ -18,7 +18,7 @@ CreateTool::~CreateTool()
 
 	//de->Redraw(pos,1);
 //}
-void CreateTool::Move(CPoint pos){
+void CreateTool::Move(CPoint pos, CPoint oldpos){
 	this->Update(pos);
 }
 void CreateTool::Release(CPoint pos){

@@ -44,11 +44,19 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->isStream()){
 			Stream *tempse = (Stream*)(*it);
-			if (tempse->startisInfieldof(e, pos)){
-				tempse->setStartElement(e);
+			if (tempse->CompareStartElementWith(e) && !tempse->startisInfieldof(e, pos)){
+				tempse->setStartElement(NULL);
 			}
-			if (tempse->endisInfieldof(e, pos)){
-				(tempse->setEndElement(e));
+			else if (tempse->CompareEndElementWith(e) && !tempse->endisInfieldof(e, pos)){
+				tempse->setEndElement(NULL);
+			}
+			else{
+				if (tempse->startisInfieldof(e, pos)){
+					tempse->setStartElement(e);
+				}
+				if (tempse->endisInfieldof(e, pos)){
+					(tempse->setEndElement(e));
+				}
 			}
 		}
 	}
@@ -56,22 +64,26 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 void Diagram::SetStartElementforStream(Stream *se, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
-		if ((*it)->Contains(pos)){
-			//Stream *tempse = (Stream*)e;
-			//tempse->setStartElement(*it);
-			se->setStartElement(*it);
-			break;
+		if (!(*it)->isStream() && (*it) != se){
+			if (se->CompareStartElementWith((*it)) && !(*it)->Contains(pos)){
+				se->setStartElement(NULL);
+			}
+			else if ((*it)->Contains(pos)){
+				se->setStartElement(*it);
+			}
 		}
 	}
 }
 void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
-		if ((*it)->Contains(pos)){
-			//Stream *tempse = (Stream*)e;
-			//tempse->setEndElement(*it);
-			se->setEndElement(*it);
-			break;
+		if (!(*it)->isStream() && (*it) != se){
+			if (se->CompareEndElementWith((*it)) && !(*it)->Contains(pos)){
+				se->setEndElement(NULL);
+			}
+			else if ((*it)->Contains(pos)){
+				se->setEndElement(*it);
+			}
 		}
 	}
 }
@@ -85,14 +97,19 @@ void Diagram::Remove(Element *currente){
 	}
 	}*/
 
-void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs, CPoint startmidend[][3]){
+
+void Diagram::DrawDiagram(vector<CPoint>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]){
+
 	vector<Element*>::iterator it;
 	int i = 0;
 	Stream *tempse;
 	for (it = elems.begin(); it != elems.end(); it++){
-		poss.push_back(&(*it)->midPoint);
-		types.push_back((*it)->type);
-		strs.push_back((*it)->text);
+		poss.push_back((*it)->getmidPoint());
+		if ((*it)->isSource()) types.push_back(1);
+		else if ((*it)->isProcess()) types.push_back(2);
+		else if ((*it)->isDataStorage()) types.push_back(3);
+		else types.push_back(4);
+		strs.push_back((*it)->getText());
 		if ((*it)->isStream()){
 			tempse = (Stream*)(*it);
 			startmidend[i][0] = tempse->getStart();
@@ -116,9 +133,10 @@ void Diagram::FindStreams(vector<Element*>& elemq) //传入EndElement传出所有Strea
 	while (!midElems.empty()){  //中间节点不为空
 		for (it = elems.begin(); it != elems.end(); it++){
 			if ((*it)->isStream())
+
 			{
 				tmp = (Stream*)(*it);
-				if (tmp->getEndElement()->midPoint == midElems.front()->midPoint)  // Stream终点图元为传入图元时
+				if (tmp->getEndElement()->getmidPoint() == midElems.front()->getmidPoint())  // Stream终点图元为传入图元时
 				{
 					elemq.push_back(tmp);  //传出流
 					midElems.push_back(tmp->getStartElement());

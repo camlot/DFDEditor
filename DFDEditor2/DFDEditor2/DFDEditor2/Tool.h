@@ -26,7 +26,7 @@ public:
 	void ClearCurrentE();
 	//void getDiagramEditor(DiagramEditor *d);
 	virtual void Press(CPoint pos, HWND hWnd){}
-	virtual void Move(CPoint pos){}
+	virtual void Move(CPoint pos, CPoint oldpos){}
 	//virtual void Move(CPoint pos, Element *currente){}
 	virtual void Release(CPoint pos){}
 	//virtual void Release(CPoint pos, Element *currente){}

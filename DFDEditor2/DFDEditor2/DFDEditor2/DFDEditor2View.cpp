@@ -50,9 +50,10 @@ END_MESSAGE_MAP()
 CDFDEditor2View::CDFDEditor2View()
 {
 	// TODO:  在此处添加构造代码
-	x = 0; y = 0; type = 0;
+	//x = 0; y = 0; type = 0;
 	pressState = 0;
-	highlight = false;
+	//pos = NULL;
+	//highlight = false;
 }
 
 CDFDEditor2View::~CDFDEditor2View()
@@ -75,12 +76,13 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	CPen *pen;
-	CDC MemDC; //首先定义一个显示设备对象 
-	CBitmap MemBitmap;//定义一个位图对象 
-	CRect rect;
-	this->GetWindowRect(&rect);
+	//CPen *pen;
+	//CDC MemDC; //首先定义一个显示设备对象 
+	//CBitmap MemBitmap;//定义一个位图对象 
+	//CRect rect;
+	//this->GetWindowRect(&rect);
 
+	/*
 	//随后建立与屏幕显示兼容的内存显示设备 
 	MemDC.CreateCompatibleDC(NULL);
 	//这时还不能绘图，因为没有地方画 ^_^ 
@@ -99,6 +101,7 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 	//绘图 
 	//MemDC.MoveTo(……);
 	//MemDC.LineTo(……);
+	*/
 
 
 
@@ -113,7 +116,7 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 
 
 	// TODO:  在此处为本机数据添加绘制代码
-	if (highlight){
+	/*if (highlight){
 		pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
 		MemDC.SelectObject(pen);
 	}
@@ -133,10 +136,13 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 		MemDC.LineTo(x + 60, y + 40);
 		break;
 	default:;
-	}
-	if (pDoc->d){   // 遍历当前窗口对应的图形，画出所有图元
+	}*/
+	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	pMainFrame->de->Draw(GetDocument()->e, GetDocument()->d, pDoc->original, pDoc->pos, pDC);
+	
+	/*if (pDoc->d){   // 遍历当前窗口对应的图形，画出所有图元
 		pen = new CPen(PS_SOLID, 1, RGB(0, 0, 0));
-		MemDC.SelectObject(pen);
+		pDC->SelectObject(pen);
 		vector<CPoint*>poss;
 		vector<int>types;
 		vector<CString>strs;
@@ -148,43 +154,45 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 		int i = 0;
 		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++,it2++,it3++){
 			switch ((*it2)){
-			case 1: MemDC.Rectangle((*it1)->x - 60, (*it1)->y - 40, (*it1)->x + 60, (*it1)->y + 40);
-				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
+			case 1: pDC->Rectangle((*it1)->x - 60, (*it1)->y - 40, (*it1)->x + 60, (*it1)->y + 40);
+				pDC->TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
 				break;
-			case 2: MemDC.Ellipse((*it1)->x - 50, (*it1)->y - 50, (*it1)->x + 50, (*it1)->y + 50);
-				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
+			case 2: pDC->Ellipse((*it1)->x - 50, (*it1)->y - 50, (*it1)->x + 50, (*it1)->y + 50);
+				pDC->TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
 				break;
-			case 3: MemDC.MoveTo((*it1)->x - 60, (*it1)->y + 20);
-				MemDC.LineTo((*it1)->x + 60, (*it1)->y + 20);
-				MemDC.MoveTo((*it1)->x - 60, (*it1)->y + 40);
-				MemDC.LineTo((*it1)->x + 60, (*it1)->y + 40);
-				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
+			case 3: pDC->MoveTo((*it1)->x - 60, (*it1)->y + 20);
+				pDC->LineTo((*it1)->x + 60, (*it1)->y + 20);
+				pDC->MoveTo((*it1)->x - 60, (*it1)->y + 40);
+				pDC->LineTo((*it1)->x + 60, (*it1)->y + 40);
+				pDC->TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
 				break;
-			case 4: /*MemDC.MoveTo((*it1)->x - 60, (*it1)->y - 40);
-				MemDC.LineTo((*it1)->x, (*it1)->y - 40);
-				MemDC.LineTo((*it1)->x, (*it1)->y + 40);
-				MemDC.LineTo((*it1)->x + 60, (*it1)->y + 40);
-				MemDC.TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));*/
-				//MemDC.MoveTo()
-				MemDC.MoveTo(startmidend[i][0].x, startmidend[i][0].y);
-				MemDC.LineTo(startmidend[i][0].x, startmidend[i][1].y);
-				MemDC.LineTo(startmidend[i][2].x, startmidend[i][1].y);
-				MemDC.LineTo(startmidend[i][2].x, startmidend[i][2].y);
+			case 4: //pDC->MoveTo((*it1)->x - 60, (*it1)->y - 40);
+				//pDC->LineTo((*it1)->x, (*it1)->y - 40);
+				//pDC->LineTo((*it1)->x, (*it1)->y + 40);
+				//pDC->LineTo((*it1)->x + 60, (*it1)->y + 40);
+				//pDC->TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
+				//pDC->MoveTo()
+				pDC->MoveTo(startmidend[i][0].x, startmidend[i][0].y);
+				pDC->LineTo(startmidend[i][0].x, startmidend[i][1].y);
+				pDC->LineTo(startmidend[i][2].x, startmidend[i][1].y);
+				pDC->LineTo(startmidend[i][2].x, startmidend[i][2].y);
+				pDC->TextOutW((*it1)->x - 20, (*it1)->y - 20, (*it3));
 				i++;
 				break;
 			default:;
 			}
 		}
-	}
+	}*/
+	
 
-	type = 0;
+	//type = 0;
 
 	//将内存中的图拷贝到屏幕上进行显示 
-	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
+	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
 
 	//绘图完成后的清理 
-	MemBitmap.DeleteObject();
-	MemDC.DeleteDC();
+	//MemBitmap.DeleteObject();
+	//MemDC.DeleteDC();
 }
 
 
@@ -227,12 +235,15 @@ CDFDEditor2Doc* CDFDEditor2View::GetDocument() const // 非调试版本是内联的
 }
 #endif //_DEBUG
 
-void CDFDEditor2View::SetXY(int x, int y, int type, bool highlight){
+/*void CDFDEditor2View::SetXY(int x, int y, int type, bool highlight){
 	this->x = x;
 	this->y = y;
 	this->type = type;
 	this->highlight = highlight;
-}
+}*/
+//void CDFDEditor2View::SetPos(CPoint *pos){
+	//this->pos = pos;
+//}
 
 // CDFDEditor2View 消息处理程序
 
@@ -251,6 +262,8 @@ void CDFDEditor2View::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	pressState = 1;
+	GetDocument()->SetPos(point);
+	oldpos = point;
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->Press(point);
 	//CView::OnLButtonDown(nFlags, point);
@@ -262,9 +275,11 @@ void CDFDEditor2View::OnLButtonUp(UINT nFlags, CPoint point)
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 
 	//CView::OnLButtonUp(nFlags, point);
+	GetDocument()->SetPos(point);
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->Release(point);
 	pressState = 0;
+	oldpos = 0;
 }
 
 
@@ -274,8 +289,10 @@ void CDFDEditor2View::OnMouseMove(UINT nFlags, CPoint point)
 
 	//CView::OnMouseMove(nFlags, point);
 	if (pressState == 1){
+		GetDocument()->SetPos(point);
 		CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
-		pMainFrame->de->Move(point);
+		pMainFrame->de->Move(point, this->oldpos);
+		this->oldpos = point;
 	}
 }
 
@@ -315,6 +332,7 @@ void CDFDEditor2View::OnRButtonDown(UINT nFlags, CPoint point)
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 
 	//CView::OnRButtonDown(nFlags, point);
+	GetDocument()->SetPos(point);
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->RightPress(point);
 }
@@ -325,6 +343,7 @@ void CDFDEditor2View::OnRButtonUp(UINT nFlags, CPoint point)
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 
 	//CView::OnRButtonUp(nFlags, point);
+	GetDocument()->SetPos(point);
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->RightRelease(point);
 }
@@ -335,6 +354,7 @@ void CDFDEditor2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 
 	//CView::OnLButtonDblClk(nFlags, point);
+	GetDocument()->SetPos(point);
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->DoubleClick(point);
 }
