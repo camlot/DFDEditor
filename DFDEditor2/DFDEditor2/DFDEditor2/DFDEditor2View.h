@@ -47,17 +47,17 @@ protected:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnRectangle();
-	afx_msg void OnEllipse();
-	afx_msg void OnDataStorage();
-	afx_msg void OnStream();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLookup();
+	afx_msg void OnSource();  // 菜单项：选中源(Source)
+	afx_msg void OnProcess();  // 菜单项：选中加工(Process)
+	afx_msg void OnDataStorage();  // 菜单项：选中存储(DataStorage)
+	afx_msg void OnStream();   // 菜单项：选中流(Stream)
+	afx_msg void OnLookup();  // 菜单项：选中查找路径
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);  // 释放鼠标右键
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);  // 释放鼠标左键
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);  // 按下鼠标右键
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);  // 释放鼠标右键
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);  // 双击鼠标左键
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);  // 鼠标移动
 };
 
 #ifndef _DEBUG  // DFDEditor2View.cpp 中的调试版本

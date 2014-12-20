@@ -3,12 +3,20 @@ class DiagramEditor;
 class Element;
 class Diagram;
 
+enum ToolType
+{
+	CREATTOOL = 1,
+	EDITTOOL = 2,
+	LOOKUPTOOL = 3
+};
+
 class Tool
 {
 protected:
 	Diagram *currentd;
 	Element *currente;
 	DiagramEditor *de;
+	ToolType type;
 public:
 	Tool();
 	~Tool();
@@ -25,6 +33,8 @@ public:
 	//virtual void RightPress(CPoint pos, HWND hWnd){}
 	//virtual void RightRelease(CPoint pos){}
 	//virtual void DoubleClick(CPoint pos, HWND hWnd){}
-	void Select(Diagram *&d, HWND hWnd);   
+	void Select(Diagram *&d, HWND hWnd); 
+	void SetType(ToolType type);
+	ToolType GetType();
 };
 

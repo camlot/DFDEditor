@@ -10,6 +10,7 @@ StreamTool::StreamTool()
 
 StreamTool::StreamTool(DiagramEditor *d){
 	de = d;
+	type = CREATTOOL;
 }
 
 StreamTool::~StreamTool()

@@ -145,14 +145,24 @@ void DiagramEditor::DoubleClick(CPoint pos){
 
 	if (!hWnd) AfxMessageBox(_T("Top Window Not Found!"));
 	
-	EditTool *newet = (EditTool*)currenttool;
-	//currenttool->DoubleClick(pos, hWnd);
-	newet->DoubleClick(pos, hWnd);
+	if (currenttool->GetType() == EDITTOOL)
+	{
+		EditTool *newet = (EditTool*)currenttool;
+		newet->DoubleClick(pos, hWnd);
+	}
+	else if (currenttool->GetType() == LOOKUPTOOL)
+	{
+		LookupTool *newlkt = (LookupTool*)currenttool;
+		newlkt->DoubleClick(pos, hWnd);
+	}
 
 }
 void DiagramEditor::Release(CPoint pos){
-	currenttool->Release(pos);
-	ClearCurrentTool();
+	if (currenttool->GetType() != LOOKUPTOOL)
+	{
+		currenttool->Release(pos);
+		ClearCurrentTool();
+	}
 }
 void DiagramEditor::RightRelease(CPoint pos){
 	if (hasCurrentE()){

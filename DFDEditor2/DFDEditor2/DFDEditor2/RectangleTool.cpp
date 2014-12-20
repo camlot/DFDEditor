@@ -16,6 +16,7 @@ RectangleTool::RectangleTool(DiagramEditor *d)
 	currente = NULL;
 	currentd = NULL;
 	de = d;
+	type = CREATTOOL;
 }
 
 

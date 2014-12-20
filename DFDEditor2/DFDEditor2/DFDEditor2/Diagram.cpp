@@ -31,7 +31,7 @@ bool Diagram::FindStream(Element *e, list<Element*>&ElementQueue){
 HWND Diagram::SearchWnd(Element *e){
 	HWND hWnd = NULL;
 	map<Element*, HWND>::iterator it;
-	for (it = proess2Diagram.begin(); it != proess2Diagram.end(); it++){
+	for (it = process2Diagram.begin(); it != process2Diagram.end(); it++){
 		if (it->first == e){
 			hWnd = it->second;
 			break;
@@ -76,16 +76,16 @@ void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 	}
 }
 void Diagram::Remove(Element *currente){
-	
+
 }
 /*void Diagram::DrawDiagram(map<CPoint*, int>&drawdiagram){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
-		drawdiagram.insert(pair<CPoint*, int>(&(*it)->midPoint, (*it)->type));
+	drawdiagram.insert(pair<CPoint*, int>(&(*it)->midPoint, (*it)->type));
 	}
-}*/
+	}*/
 
-void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]){
+void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs, CPoint startmidend[][3]){
 	vector<Element*>::iterator it;
 	int i = 0;
 	Stream *tempse;
@@ -103,22 +103,29 @@ void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CStrin
 	}
 }
 void Diagram::InsertMap(Element *e, HWND hWnd){
-	proess2Diagram.insert(pair<Element*, HWND>(e, hWnd));
+	process2Diagram.insert(pair<Element*, HWND>(e, hWnd));
 }
 
-void Diagram::FindStreams(queue<Element*>& elemq) //传入EndElement传出Stream
+void Diagram::FindStreams(vector<Element*>& elemq) //传入EndElement传出所有Stream
 {
 	vector<Element*>::iterator it;
 	Stream* tmp;
-	int endElemNum = elemq.size();
-	for (it = elems.begin(); it != elems.end(),endElemNum > 0; it++){
-		if ((*it)->isStream())
-		{
-			tmp = (Stream*)(*it);
-			if (elemq.front()->midPoint)  ///////////////////
+	vector<Element*> midElems = elemq;
+	elemq.clear();
+	int endElemNum = midElems.size();  //获取终点节点数目
+	while (!midElems.empty()){  //中间节点不为空
+		for (it = elems.begin(); it != elems.end(); it++){
+			if ((*it)->isStream())
 			{
-
+				tmp = (Stream*)(*it);
+				if (tmp->getEndElement()->midPoint == midElems.front()->midPoint)  // Stream终点图元为传入图元时
+				{
+					elemq.push_back(tmp);  //传出流
+					midElems.push_back(tmp->getStartElement());
+				}
 			}
 		}
+		midElems.erase(midElems.begin());  //第一个元素清除
+		endElemNum--;
 	}
 }

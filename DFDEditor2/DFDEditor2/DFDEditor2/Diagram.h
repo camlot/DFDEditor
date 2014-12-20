@@ -12,12 +12,13 @@ using std::vector;
 using std::map;
 using std::list;
 using std::string;
+using std::queue;
 
 class Diagram
 {
 private:
 	vector<Element*> elems;  // 保存图形中的图元
-	map<Element*, HWND> proess2Diagram;
+	map<Element*, HWND> process2Diagram;   // 
 
 public:
 	Diagram();
@@ -33,7 +34,7 @@ public:
 	//void DrawDiagram(map<CPoint*, int>&drawdiagram);
 	void DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]);
 	void InsertMap(Element *e, HWND hWnd);
-	void FindStreams(queue<Element*>& elemq);  // 找到连接线
+	void FindStreams(vector<Element*>& elemq);  // 找到连接线
 };
 
 

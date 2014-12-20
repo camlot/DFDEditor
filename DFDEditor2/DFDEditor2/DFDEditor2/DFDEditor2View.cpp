@@ -32,11 +32,11 @@ BEGIN_MESSAGE_MAP(CDFDEditor2View, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
-	ON_COMMAND(ID_32771, &CDFDEditor2View::OnRectangle)
+	ON_COMMAND(ID_32771, &CDFDEditor2View::OnSource)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
-	ON_COMMAND(ID_32773, &CDFDEditor2View::OnEllipse)
+	ON_COMMAND(ID_32773, &CDFDEditor2View::OnProcess)
 	ON_COMMAND(ID_32774, &CDFDEditor2View::OnDataStorage)
 	ON_COMMAND(ID_32775, &CDFDEditor2View::OnStream)
 	ON_WM_RBUTTONDOWN()
@@ -237,7 +237,7 @@ void CDFDEditor2View::SetXY(int x, int y, int type, bool highlight){
 // CDFDEditor2View 消息处理程序
 
 
-void CDFDEditor2View::OnRectangle()
+void CDFDEditor2View::OnSource()
 {
 	// TODO:  在此添加命令处理程序代码
 	//CDFDEditor2Doc *pDoc = GetDocument();
@@ -280,7 +280,7 @@ void CDFDEditor2View::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 
-void CDFDEditor2View::OnEllipse()
+void CDFDEditor2View::OnProcess()
 {
 	// TODO:  在此添加命令处理程序代码
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();

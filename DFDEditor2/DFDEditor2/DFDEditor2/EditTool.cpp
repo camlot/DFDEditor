@@ -19,6 +19,7 @@ EditTool::EditTool(DiagramEditor *d)
 	currente = NULL;
 	currentd = NULL;
 	de = d;
+	type = EDITTOOL;
 }
 
 
@@ -47,9 +48,9 @@ void EditTool::Press(CPoint pos, HWND hWnd){
 		}
 		else{
 			//this->ClearCurrentE();
-			de->ClearCurrentE();
-			de->ClearCurrentTool();
-			de->Redraw(pos, 0, false);
+			//de->ClearCurrentE();
+			//de->ClearCurrentTool();
+			de->Redraw(pos, 0, false);  // 释放highlight
 		}
 	}
 
@@ -92,7 +93,7 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 			de->SetCurrentE(e);
 			de->Highlight();
 			d = NULL;
-			if (e->isProcess()){
+			if (e->isProcess()){  // 如果该图元是Process
 				if (e->hasSubDiagram()){
 					h = de->SearchDiagramtoProcess(d);
 					this->OpenDiagramtoProcess(h, d);

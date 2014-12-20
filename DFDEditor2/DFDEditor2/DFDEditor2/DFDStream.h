@@ -26,6 +26,8 @@ public:
 	void setStartElement(Element *e);
 	void setEndElement(Element *e);
 	void setControstate(int state);
+	Element* getStartElement();  // 返回开始点连接的图元
+	Element* getEndElement();  // 返回结束点连接的图元
 };
 
 

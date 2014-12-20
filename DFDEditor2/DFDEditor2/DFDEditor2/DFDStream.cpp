@@ -109,3 +109,13 @@ void Stream::setControstate(int state){
 	this->controlstate = state;
 
 }
+
+Element* Stream::getStartElement()
+{
+	return this->startE;
+}
+
+Element* Stream::getEndElement()
+{
+	return this->endE;
+}

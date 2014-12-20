@@ -31,3 +31,13 @@ void Tool::ClearCurrentE(){
 void Tool::Select(Diagram *&d, HWND hWnd){
 	de->SearchDiagram(hWnd, d);
 }
+
+void Tool::SetType(ToolType type)
+{
+	this->type = type;
+}
+
+ToolType Tool::GetType()
+{
+	return this->type;
+}

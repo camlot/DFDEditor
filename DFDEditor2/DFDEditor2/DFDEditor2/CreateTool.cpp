@@ -28,3 +28,13 @@ void CreateTool::Release(CPoint pos){
 	this->SetCurrentE(e);
 	de->EndCreate(e);
 }
+
+void CreateTool::CreateElement(CPoint pos, Element *&e)
+{
+
+}
+
+void CreateTool::Update(CPoint pos)
+{
+
+}
