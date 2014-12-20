@@ -5,7 +5,7 @@ using namespace std;
 
 class Element
 {
-public:
+protected:
 
 	int type;//图元类别标志
 	CPoint midPoint;//图形中间点
@@ -16,13 +16,14 @@ public:
 	//Element(int type, CPoint midPoint, CString text);
 	~Element();
 	CPoint getmidPoint();
+	CString getText();
 	void SetText(CString s);  // 设置图元文本
 	virtual bool Contains(CPoint pos){ return true; }  // 判定传入点是否在图元内部
 	//virtual bool startisInfieldof(Element *e, CPoint pos){ return false; }
 	//virtual bool endisInfieldof(Element *e, CPoint pos){ return false; }
 
-	virtual bool hasSubDiagram(){ return true;}
-	virtual void setSubDiagram(){}
+	//virtual bool hasSubDiagram(){ return true;}
+	//virtual void setSubDiagram(){}
 	//virtual void setStartElement(Element *e){}
 	//virtual void setEndElement(Element *e){}
 	bool isProcess();  // 是否是加工（有子图）
@@ -30,5 +31,5 @@ public:
 	bool isStream();   // 是否是流（连接线）
 	bool isSource();  // 是否是源（查找子图的终点）
 	bool isDataStorage();  // 是否是存储
-	virtual void Offset(CPoint pos);  // 位移（移动图元）
+	virtual void Offset(CPoint pos, CPoint oldpos);  // 位移（移动图元）
 };

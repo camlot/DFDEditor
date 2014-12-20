@@ -8,9 +8,11 @@ class CDFDEditor2Doc;
 class CDFDEditor2View : public CView
 {
 private:
-	int x, y, type;
+	//int x, y, type;
 	int pressState;
-	bool highlight;
+	CPoint oldpos;
+	//bool highlight;
+	//CPoint *pos;
 
 protected: // 仅从序列化创建
 	CDFDEditor2View();
@@ -19,7 +21,8 @@ protected: // 仅从序列化创建
 // 特性
 public:
 	CDFDEditor2Doc* GetDocument() const;
-	void SetXY(int x, int y, int type, bool highlight);
+	//void SetXY(int x, int y, int type, bool highlight);
+	//void SetPos(CPoint *pos);
 
 // 操作
 public:

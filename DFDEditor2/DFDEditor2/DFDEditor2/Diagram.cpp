@@ -97,14 +97,17 @@ void Diagram::Remove(Element *currente){
 	}
 }*/
 
-void Diagram::DrawDiagram(vector<CPoint*>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]){
+void Diagram::DrawDiagram(vector<CPoint>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]){
 	vector<Element*>::iterator it;
 	int i = 0;
 	Stream *tempse;
 	for (it = elems.begin(); it != elems.end(); it++){
-		poss.push_back(&(*it)->midPoint);
-		types.push_back((*it)->type);
-		strs.push_back((*it)->text);
+		poss.push_back((*it)->getmidPoint());
+		if ((*it)->isSource()) types.push_back(1);
+		else if ((*it)->isProcess()) types.push_back(2);
+		else if ((*it)->isDataStorage()) types.push_back(3);
+		else types.push_back(4);
+		strs.push_back((*it)->getText());
 		if ((*it)->isStream()){
 			tempse = (Stream*)(*it);
 			startmidend[i][0] = tempse->getStart();
@@ -127,7 +130,7 @@ void Diagram::FindStreams(queue<Element*>& elemq) //传入EndElement传出Stream
 		if ((*it)->isStream())
 		{
 			tmp = (Stream*)(*it);
-			if (&elemq.front()->midPoint)  ///////////////////
+			if (&elemq.front()->getmidPoint())  ///////////////////
 			{
 
 			}

@@ -7,19 +7,27 @@
 //#include"DiagramEditor.h"
 //class DiagramEditor;
 class Diagram;
+class Element;
 
 class CDFDEditor2Doc : public CDocument
 {
+
 protected: // 仅从序列化创建
 	CDFDEditor2Doc();
 	DECLARE_DYNCREATE(CDFDEditor2Doc)
 
 // 特性
 public:
+	CPoint pos;
 	Diagram *d;
+	Element *e;
+	bool original;
 // 操作
 public:
-
+	void SetOri(bool o);
+	void SetPos(CPoint pos);
+	void SetDiagram(Diagram *d);
+	void SetElement(Element *e);
 // 重写
 public:
 	virtual BOOL OnNewDocument();

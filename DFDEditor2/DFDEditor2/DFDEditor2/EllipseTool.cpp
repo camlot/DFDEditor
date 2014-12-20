@@ -26,7 +26,8 @@ void EllipseTool::Press(CPoint pos, HWND hWnd){
 	if (d){
 		//SetCurrentD(d);
 		de->SetCurrentD(d);
-		de->Redraw(pos, 2, false);
+		//de->Redraw(pos, 2, false);
+		de->Redraw(true);
 	}
 }
 
@@ -38,5 +39,6 @@ void EllipseTool::CreateElement(CPoint pos, Element *&e){
 	currentd->SetElementforStreambyElement(e, pos);
 }
 void EllipseTool::Update(CPoint pos){
-	de->Redraw(pos, 2, false);
+	//de->Redraw(pos, 2, false);
+	de->Redraw(true);
 }

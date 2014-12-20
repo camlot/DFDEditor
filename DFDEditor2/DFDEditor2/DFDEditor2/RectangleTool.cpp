@@ -29,7 +29,8 @@ void RectangleTool::Press(CPoint pos, HWND hWnd){
 	if (d){
 		//SetCurrentD(d);
 		de->SetCurrentD(d);
-		de->Redraw(pos, 1, false);
+		//de->Redraw(pos, 1, false);
+		de->Redraw(true);
 	}
 }
 void RectangleTool::CreateElement(CPoint pos, Element *&e){
@@ -40,5 +41,6 @@ void RectangleTool::CreateElement(CPoint pos, Element *&e){
 	currentd->SetElementforStreambyElement(e, pos);
 }
 void RectangleTool::Update(CPoint pos){
-	de->Redraw(pos, 1, false);
+	//de->Redraw(pos, 1, false);
+	de->Redraw(true);
 }

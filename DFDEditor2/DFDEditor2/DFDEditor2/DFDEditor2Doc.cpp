@@ -36,6 +36,9 @@ CDFDEditor2Doc::CDFDEditor2Doc()
 {
 	// TODO:  在此添加一次性构造代码
 	d = NULL;
+	//pos = NULL;
+	e = NULL;
+	original = false;
 }
 
 CDFDEditor2Doc::~CDFDEditor2Doc()
@@ -140,3 +143,15 @@ void CDFDEditor2Doc::Dump(CDumpContext& dc) const
 
 
 // CDFDEditor2Doc 命令
+void CDFDEditor2Doc::SetOri(bool o){
+	this->original = o;
+}
+void CDFDEditor2Doc::SetPos(CPoint pos){
+	this->pos = pos;
+}
+void CDFDEditor2Doc::SetDiagram(Diagram *d){
+	this->d = d;
+}
+void CDFDEditor2Doc::SetElement(Element *e){
+	this->e = e;
+}

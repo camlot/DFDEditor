@@ -33,14 +33,16 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 			queue<Element*> tmpElements;
 			
 			de->SetCurrentE(e);
-			de->Highlight();
+			//de->Highlight();
+			de->Redraw(NULL);
 			
 		}
 		else{  // 未点中Source
 			//this->ClearCurrentE();
 			de->ClearCurrentE();  // 清空当前持有的图元
 			de->ClearCurrentTool();  // 释放当前tool
-			de->Redraw(pos, 0, false);  // 不高亮
+			//de->Redraw(pos, 0, false);  // 不高亮
+			de->Redraw(NULL);
 		}
 	}
 }

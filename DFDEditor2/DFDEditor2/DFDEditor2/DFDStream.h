@@ -18,8 +18,8 @@ public:
 	CPoint getStart();
 	CPoint getEnd();
 	void ContainsPoint(CPoint pos);
-	bool Onsize(CPoint pos);
-	void Offset(CPoint pos0);
+	void Onsize(CPoint pos);
+	void Offset(CPoint pos, CPoint oldpos);
 	bool Contains(CPoint pos);
 	bool CompareStartElementWith(Element *e);
 	bool CompareEndElementWith(Element *e);

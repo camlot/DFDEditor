@@ -10,6 +10,8 @@ class Element;
 class Diagram;
 class CMainFrame;
 class CChildFrame;
+class CDFDEditor2Doc;
+class CDFDEditor2View;
 
 
 #include<vector>
@@ -21,6 +23,8 @@ class DiagramEditor
 private:
 	CMainFrame *cpMainFrame;
 	CChildFrame *cpChildFrame;
+	//CDFDEditor2Doc *cpDoc;
+	//CDFDEditor2View *cpView;
 
 	Element *currente;  // 指向当前图元
 	Diagram *currentd;  // 指向当前图形
@@ -53,11 +57,15 @@ public:
 	void Release(CPoint pos);
 	void RightRelease(CPoint pos);
 	void Remove();
-	void Redraw(CPoint pos, int type, bool highlight);
-	void Redraw();
-	void Highlight();
-	void Move(CPoint pos);
-	void Focus(CPoint pos, Element *e);
+	//void Redraw(CPoint pos, int type, bool highlight);
+	//void Redraw();
+	void Draw(Element *doce, Diagram *docd, bool original, CPoint pos, CDC *pDC);
+	void Redraw(bool original);
+	void DrawOriginal(CDC *pDC,CPoint pos);
+	//void Highlight();
+	void Highlight(CDC *pDC);
+	void Move(CPoint pos, CPoint oldpos);
+	void Focus(CDC *pDC);
 	void EndCreate(Element *e);
 	//void UpdateText(CString s);
 	//void UpdatePosition(CPoint pos);
