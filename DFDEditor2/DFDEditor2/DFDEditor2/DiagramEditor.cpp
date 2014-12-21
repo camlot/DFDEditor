@@ -277,28 +277,28 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 
 				if (startmidend[i][1].y<startmidend[i][2].y)   //¼ıÍ·³¯ÏÂ
 				{
-					pDC->LineTo(startmidend[i][2].x + 5, startmidend[i][2].y - 5);
+					pDC->LineTo(startmidend[i][2].x + 10, startmidend[i][2].y - 20);
 					pDC->MoveTo(startmidend[i][2].x, startmidend[i][2].y);
-					pDC->LineTo(startmidend[i][2].x - 5, startmidend[i][2].y - 5);
+					pDC->LineTo(startmidend[i][2].x - 10, startmidend[i][2].y - 20);
 				}
 				else if (startmidend[i][1].y > startmidend[i][2].y) //¼ıÍ·³¯ÉÏ
 				{
-					pDC->LineTo(startmidend[i][2].x - 5, startmidend[i][2].y + 5);
+					pDC->LineTo(startmidend[i][2].x - 10, startmidend[i][2].y + 20);
 					pDC->MoveTo(startmidend[i][2].x, startmidend[i][2].y);
-					pDC->LineTo(startmidend[i][2].x + 5, startmidend[i][2].y + 5);
+					pDC->LineTo(startmidend[i][2].x + 10, startmidend[i][2].y + 20);
 				}
 				else if (startmidend[i][1].y == startmidend[i][2].y) 
 				{
 					if (startmidend[i][1].x < startmidend[i][2].x)  //¼ıÍ·³¯ÓÒ
 					{
-						pDC->LineTo(startmidend[i][2].x - 5, startmidend[i][2].y - 5);
+						pDC->LineTo(startmidend[i][2].x - 20, startmidend[i][2].y - 10);
 						pDC->MoveTo(startmidend[i][2].x, startmidend[i][2].y);
-						pDC->LineTo(startmidend[i][2].x - 5, startmidend[i][2].y + 5);
+						pDC->LineTo(startmidend[i][2].x - 20, startmidend[i][2].y + 10);
 					}
 					else {  //¼ıÍ·³¯×ó
-						pDC->LineTo(startmidend[i][2].x + 5, startmidend[i][2].y - 5);
+						pDC->LineTo(startmidend[i][2].x + 20, startmidend[i][2].y - 10);
 						pDC->MoveTo(startmidend[i][2].x, startmidend[i][2].y);
-						pDC->LineTo(startmidend[i][2].x + 5, startmidend[i][2].y + 5);
+						pDC->LineTo(startmidend[i][2].x + 20, startmidend[i][2].y + 10);
 
 					}
 				}
@@ -402,31 +402,32 @@ void DiagramEditor::Highlight(CDC *pDC){
 		if (mid.y<end.y)  //¼ıÍ·³¯ÏÂ
 	{	
 		pDC->MoveTo(end.x, end.y); 
-		pDC->LineTo(end.x - 5, end.y - 5);
+		pDC->LineTo(end.x - 10, end.y - 20);
 		pDC->MoveTo(end.x, end.y);
-		pDC->LineTo(end.x + 5, end.y - 5);
+		pDC->LineTo(end.x + 10, end.y - 20);
 	}
 		else if (mid.y>end.y) //¼ıÍ·³¯ÉÏ
 		{
 			pDC->MoveTo(end.x, end.y);
-			pDC->LineTo(end.x + 5, end.y + 5);
+			pDC->LineTo(end.x + 10, end.y + 20);
 			pDC->MoveTo(end.x, end.y);
-			pDC->LineTo(end.x - 5, end.y + 5);
+			pDC->LineTo(end.x - 10, end.y + 20);
 		}
 		else  {
 			if (mid.x<end.x)  //¼ıÍ·³¯ÓÒ
 			{
 				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x - 5, end.y - 5);
+				pDC->LineTo(end.x - 20, end.y - 10);
 				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x - 5, end.y + 5);
+				pDC->LineTo(end.x - 20, end.y + 10);
 			} 
 			else  //¼ıÍ·³¯×ó
 			{
+				
 				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x + 5, end.y - 5);
+				pDC->LineTo(end.x + 20, end.y - 10);
 				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x + 5, end.y + 5);
+				pDC->LineTo(end.x + 20, end.y +10);
 			}
 		}
 		
