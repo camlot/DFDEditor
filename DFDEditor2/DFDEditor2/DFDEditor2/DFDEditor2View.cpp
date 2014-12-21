@@ -104,17 +104,6 @@ void CDFDEditor2View::OnDraw(CDC* pDC)
 	*/
 
 
-
-
-
-
-
-
-
-
-
-
-
 	// TODO:  在此处为本机数据添加绘制代码
 	/*if (highlight){
 		pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));

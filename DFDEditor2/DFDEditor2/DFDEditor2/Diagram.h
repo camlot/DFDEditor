@@ -25,7 +25,7 @@ public:
 	~Diagram();
 	void add(Element* e);
 	bool Find(CPoint pos, Element *&e);
-	bool FindStream(Element *e, list<Element*>&ElementQueue);
+	int FindStreams(Element* currente, queue<Stream*>& elemq); // 根据结束图元查找所有以该图元为终点的路径
 	HWND SearchWnd(Element *e);
 	void SetElementforStreambyElement(Element *e, CPoint pos); // e是除stream类型其他类型时使用
 	void SetStartElementforStream(Stream *se, CPoint pos);  // e是stream类型时使用

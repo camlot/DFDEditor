@@ -331,8 +331,8 @@ void DiagramEditor::Highlight(CDC *pDC){
 	}
 	else{
 		Stream *tempse = (Stream*)currente;
-		CPoint start = tempse->getStart();
-		CPoint end = tempse->getEnd();
+		CPoint start = tempse->GetStart();
+		CPoint end = tempse->GetEnd();
 		CPoint mid = tempse->getmidPoint();
 		pDC->MoveTo(start.x, start.y);
 		pDC->LineTo(start.x, mid.y);
@@ -349,11 +349,11 @@ void DiagramEditor::Focus(CDC *pDC){
 	Stream *tempse = (Stream*)currente;
 	CPen *pen = new CPen(PS_SOLID, 2, RGB(255, 0, 0));
 	pDC->SelectObject(pen);
-	pDC->Rectangle(tempse->getStart().x - 5, tempse->getStart().y - 5, tempse->getStart().x + 5, tempse->getStart().y + 5);
+	pDC->Rectangle(tempse->GetStart().x - 5, tempse->GetStart().y - 5, tempse->GetStart().x + 5, tempse->GetStart().y + 5);
 	//pen->CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
 	pen = new CPen(PS_SOLID, 2, RGB(0, 0, 255));
 	pDC->SelectObject(pen);
-	pDC->Rectangle(tempse->getEnd().x - 5, tempse->getEnd().y - 5, tempse->getEnd().x + 5, tempse->getEnd().y + 5);
+	pDC->Rectangle(tempse->GetEnd().x - 5, tempse->GetEnd().y - 5, tempse->GetEnd().x + 5, tempse->GetEnd().y + 5);
 }
 void DiagramEditor::EndCreate(Element *e){
 	//currentd->add(e);

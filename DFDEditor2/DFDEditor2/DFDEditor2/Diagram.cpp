@@ -18,6 +18,12 @@ void Diagram::add(Element* e){
 bool Diagram::Find(CPoint pos, Element *&e){
 	vector<Element*>::iterator it;
 	for (it = elems.begin(); it != elems.end(); it++){
+		if ((*it)->isStream() && (*it)->Contains(pos)){
+			e = (*it);
+			return true;
+		}
+	}
+	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->Contains(pos)){
 			e = (*it);
 			return true;
@@ -25,8 +31,35 @@ bool Diagram::Find(CPoint pos, Element *&e){
 	}
 	return false;
 }
-bool Diagram::FindStream(Element *e, list<Element*>&ElementQueue){
-	return true;
+int Diagram::FindStreams(Element* currente, queue<Stream*>& elemq){
+	vector<Element*>::iterator it;
+	Stream* tmp(NULL);
+	int flag(0); // start_end分界
+	if (currente){  //节点不为空
+		for (it = elems.begin(); it != elems.end(); it++){
+			if ((*it)->isStream())
+			{
+				tmp = (Stream*)(*it);
+				if (tmp->CompareStartElementWith(currente))  // Stream终点图元为传入图元时
+				{
+					elemq.push(tmp);  //传出流
+					flag++;
+				}
+			}
+		}
+		for (it = elems.begin(); it != elems.end(); it++){
+			if ((*it)->isStream())
+
+			{
+				tmp = (Stream*)(*it);
+				if (tmp->CompareEndElementWith(currente))  // Stream终点图元为传入图元时
+				{
+					elemq.push(tmp);  //传出流
+				}
+			}
+		}
+	}
+	return flag;
 }
 HWND Diagram::SearchWnd(Element *e){
 	HWND hWnd = NULL;
@@ -44,18 +77,18 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 	for (it = elems.begin(); it != elems.end(); it++){
 		if ((*it)->isStream()){
 			Stream *tempse = (Stream*)(*it);
-			if (tempse->CompareStartElementWith(e) && !tempse->startisInfieldof(e, pos)){
-				tempse->setStartElement(NULL);
+			if (tempse->CompareStartElementWith(e) && !tempse->StartisInfieldof(e, pos)){
+				tempse->SetStartElement(NULL);
 			}
-			else if (tempse->CompareEndElementWith(e) && !tempse->endisInfieldof(e, pos)){
-				tempse->setEndElement(NULL);
+			else if (tempse->CompareEndElementWith(e) && !tempse->EndisInfieldof(e, pos)){
+				tempse->SetEndElement(NULL);
 			}
 			else{
-				if (tempse->startisInfieldof(e, pos)){
-					tempse->setStartElement(e);
+				if (tempse->StartisInfieldof(e, pos)){
+					tempse->SetStartElement(e);
 				}
-				if (tempse->endisInfieldof(e, pos)){
-					(tempse->setEndElement(e));
+				if (tempse->EndisInfieldof(e, pos)){
+					(tempse->SetEndElement(e));
 				}
 			}
 		}
@@ -66,10 +99,10 @@ void Diagram::SetStartElementforStream(Stream *se, CPoint pos){
 	for (it = elems.begin(); it != elems.end(); it++){
 		if (!(*it)->isStream() && (*it) != se){
 			if (se->CompareStartElementWith((*it)) && !(*it)->Contains(pos)){
-				se->setStartElement(NULL);
+				se->SetStartElement(NULL);
 			}
 			else if ((*it)->Contains(pos)){
-				se->setStartElement(*it);
+				se->SetStartElement(*it);
 			}
 		}
 	}
@@ -79,10 +112,10 @@ void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 	for (it = elems.begin(); it != elems.end(); it++){
 		if (!(*it)->isStream() && (*it) != se){
 			if (se->CompareEndElementWith((*it)) && !(*it)->Contains(pos)){
-				se->setEndElement(NULL);
+				se->SetEndElement(NULL);
 			}
 			else if ((*it)->Contains(pos)){
-				se->setEndElement(*it);
+				se->SetEndElement(*it);
 			}
 		}
 	}
@@ -112,9 +145,9 @@ void Diagram::DrawDiagram(vector<CPoint>&poss, vector<int>&types, vector<CString
 		strs.push_back((*it)->getText());
 		if ((*it)->isStream()){
 			tempse = (Stream*)(*it);
-			startmidend[i][0] = tempse->getStart();
+			startmidend[i][0] = tempse->GetStart();
 			startmidend[i][1] = tempse->getmidPoint();
-			startmidend[i][2] = tempse->getEnd();
+			startmidend[i][2] = tempse->GetEnd();
 			i++;
 		}
 	}

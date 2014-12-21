@@ -125,7 +125,7 @@ void EditTool::Move(CPoint pos, CPoint oldpos){
 		if (currente->isStream())
 		{
 			Stream *t = (Stream*)currente;
-			if (t->getState()!=0)
+			if (t->GetState()!=0)
 			{
 				t->Onsize(pos);
 				//de->Highlight();
@@ -137,9 +137,21 @@ void EditTool::Move(CPoint pos, CPoint oldpos){
 				de->Redraw(false);
 			}
 		}
-		
 		else{
+			queue<Stream*> streamq;
+			int startNum = currentd->FindStreams(currente, streamq);  // 查找与原移动图元连接的连接线
 			currente->Offset(pos, oldpos);
+			while (startNum > 0)
+			{
+				streamq.front()->SetStartElement(currente);
+				streamq.pop();
+				startNum--;
+			}
+			while (!streamq.empty())
+			{
+				streamq.front()->SetEndElement(currente);
+				streamq.pop();
+			}
 			//de->Highlight();
 			de->Redraw(false);
 		}
@@ -170,8 +182,8 @@ void EditTool::Release(CPoint pos){
 	if (currente && currente->isStream()){
 
 		Stream *tempse = (Stream*)currente;
-		currentd->SetStartElementforStream(tempse, tempse->getStart());
-		currentd->SetEndElementforStream(tempse, tempse->getEnd());
+		currentd->SetStartElementforStream(tempse, tempse->GetStart());
+		currentd->SetEndElementforStream(tempse, tempse->GetEnd());
 
 	}
 	else if (currente){
@@ -180,9 +192,8 @@ void EditTool::Release(CPoint pos){
 	else{}
 	if (currente && currente->isStream()){
 		Stream *tempse = (Stream*)currente;
-	     tempse->setControstate(0);
+	     tempse->SetControlState(0);
 	}
-	
 }
 void EditTool::RightRelease(CPoint pos){
 	CDlg dlg; 

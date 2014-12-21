@@ -20,23 +20,23 @@ Stream::Stream(int type, CPoint midPoint, CString text)
 Stream::~Stream()
 {
 }
-CPoint Stream::getStart(){
+CPoint Stream::GetStart(){
 	return this->start;
 }
-CPoint Stream::getEnd(){
+CPoint Stream::GetEnd(){
 	return this->end;
 }
-int Stream::getState(){
+int Stream::GetState(){
 	return this->controlstate;
 }
 void Stream::ContainsPoint(CPoint pos){
 	if (pos.x >= this->start.x - 5 && pos.x <= this->start.x + 5 && pos.y >= start.y -5 && pos.y <= start.y + 5)
 	{
-		this->setControstate(1);
+		this->SetControlState(1);
 	}
 	if (pos.x >= this->end.x - 5 && pos.x <= this->end.x + 5 && pos.y >= end.y - 5 && pos.y <= end.y + 5)
 	{
-		this->setControstate(2);
+		this->SetControlState(2);
 	}
 	
 }
@@ -61,7 +61,7 @@ void Stream::Offset(CPoint pos, CPoint oldpos){
 	this->end += pos - oldpos;
 	this->midPoint += pos - oldpos;
 }
-bool Stream::startisInfieldof(Element *e, CPoint pos){
+bool Stream::StartisInfieldof(Element *e, CPoint pos){
 	if (e->isProcess()){
 		if (this->start.x >= pos.x - 50 && this->start.x <= pos.x + 50
 			&& this->start.y >= pos.y - 50 && this->start.y <= pos.y + 50){
@@ -77,7 +77,7 @@ bool Stream::startisInfieldof(Element *e, CPoint pos){
 		else return false;
 	}
 }
-bool Stream::endisInfieldof(Element *e, CPoint pos){
+bool Stream::EndisInfieldof(Element *e, CPoint pos){
 	if (e->isProcess()){
 		if (this->end.x >= pos.x - 50 && this->end.x <= pos.x + 50
 			&& this->end.y >= pos.y - 50 && this->end.y <= pos.y + 50){
@@ -93,7 +93,7 @@ bool Stream::endisInfieldof(Element *e, CPoint pos){
 		else return false;
 	}
 }
-bool Stream::Contains(CPoint pos){ //移动的时候需要找mid点，end点和start点的最小和最大界，然后判断是否包含
+bool Stream::Contains(CPoint pos){ 
 
 	int Maxx = (start.x > this->getmidPoint().x ? (start.x > end.x ? start.x : end.x) : (this->getmidPoint().x > end.x ? this->getmidPoint().x : end.x));
 	int Maxy = (start.y > this->getmidPoint().y ? (start.y > end.y ? start.y : end.y) : (this->getmidPoint().y > end.y ? this->getmidPoint().y : end.y));
@@ -114,14 +114,26 @@ bool Stream::CompareEndElementWith(Element *e){
 	if (this->endE == e) return true;
 	else return false;
 }
-void Stream::setStartElement(Element *e){
-	this->startE = e;
+void Stream::SetStartElement(Element *e){
+	if (e != NULL)
+	{
+		this->startE = e;
+		this->start.x = e->getmidPoint().x;
+		this->start.y = e->getmidPoint().y + 10;
+		midPoint.SetPoint((this->start.x + this->end.x) / 2, this->midPoint.y);
+	}
 }
-void Stream::setEndElement(Element *e){
-	this->endE = e;
+void Stream::SetEndElement(Element *e){
+	if (e != NULL)
+	{
+		this->endE = e;
+		this->end.x = e->getmidPoint().x;
+		this->end.y = e->getmidPoint().y + 10;
+		midPoint.SetPoint((this->start.x + this->end.x) / 2, this->midPoint.y);
+	}
 }
 
-void Stream::setControstate(int state){
+void Stream::SetControlState(int state){
 	this->controlstate = state;
 
 }
