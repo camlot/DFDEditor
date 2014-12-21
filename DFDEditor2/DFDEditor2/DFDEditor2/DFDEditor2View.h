@@ -61,6 +61,7 @@ public:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);  // 释放鼠标右键
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);  // 双击鼠标左键
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);  // 鼠标移动
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // DFDEditor2View.cpp 中的调试版本

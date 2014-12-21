@@ -12,7 +12,7 @@ Diagram::~Diagram()
 {
 }
 
-void Diagram::add(Element* e){
+void Diagram::Add(Element* e){
 	elems.push_back(e);
 }
 bool Diagram::Find(CPoint pos, Element *&e){
@@ -31,36 +31,8 @@ bool Diagram::Find(CPoint pos, Element *&e){
 	}
 	return false;
 }
-int Diagram::FindStreams(Element* currente, queue<Stream*>& elemq){
-	vector<Element*>::iterator it;
-	Stream* tmp(NULL);
-	int flag(0); // start_end分界
-	if (currente){  //节点不为空
-		for (it = elems.begin(); it != elems.end(); it++){
-			if ((*it)->isStream())
-			{
-				tmp = (Stream*)(*it);
-				if (tmp->CompareStartElementWith(currente))  // Stream终点图元为传入图元时
-				{
-					elemq.push(tmp);  //传出流
-					flag++;
-				}
-			}
-		}
-		for (it = elems.begin(); it != elems.end(); it++){
-			if ((*it)->isStream())
 
-			{
-				tmp = (Stream*)(*it);
-				if (tmp->CompareEndElementWith(currente))  // Stream终点图元为传入图元时
-				{
-					elemq.push(tmp);  //传出流
-				}
-			}
-		}
-	}
-	return flag;
-}
+
 HWND Diagram::SearchWnd(Element *e){
 	HWND hWnd = NULL;
 	map<Element*, HWND>::iterator it;
@@ -120,7 +92,20 @@ void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 		}
 	}
 }
-void Diagram::Remove(Element *currente){
+void Diagram::Remove(Element *e){
+	vector<Element*>::iterator it;
+	if (e)
+	{
+		for (it = elems.begin(); it != elems.end();){
+			if (e->getmidPoint() == (*it)->getmidPoint()){  // 如果图元的中点相同
+				it = elems.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+		}
+	}
 
 }
 /*void Diagram::DrawDiagram(map<CPoint*, int>&drawdiagram){
@@ -154,6 +139,37 @@ void Diagram::DrawDiagram(vector<CPoint>&poss, vector<int>&types, vector<CString
 }
 void Diagram::InsertMap(Element *e, HWND hWnd){
 	process2Diagram.insert(pair<Element*, HWND>(e, hWnd));
+}
+
+int Diagram::FindStreams(Element* currente, queue<Stream*>& elemq){
+	vector<Element*>::iterator it;
+	Stream* tmp(NULL);
+	int flag(0); // start_end分界
+	if (currente){  //节点不为空
+		for (it = elems.begin(); it != elems.end(); it++){
+			if ((*it)->isStream())
+			{
+				tmp = (Stream*)(*it);
+				if (tmp->CompareStartElementWith(currente))  // Stream终点图元为传入图元时
+				{
+					elemq.push(tmp);  //传出流
+					flag++;
+				}
+			}
+		}
+		for (it = elems.begin(); it != elems.end(); it++){
+			if ((*it)->isStream())
+
+			{
+				tmp = (Stream*)(*it);
+				if (tmp->CompareEndElementWith(currente))  // Stream终点图元为传入图元时
+				{
+					elemq.push(tmp);  //传出流
+				}
+			}
+		}
+	}
+	return flag;
 }
 
 void Diagram::FindStreams(vector<Element*>& elemq) //传入EndElement传出所有Stream

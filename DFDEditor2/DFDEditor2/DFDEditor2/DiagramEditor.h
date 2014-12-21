@@ -51,12 +51,12 @@ public:
 	void ClearCurrentTool();
 	void AddDiagram();  // 新建图形
 	void SearchDiagram(HWND hWnd, Diagram *&d);  // 根据句柄查找对应图形并返回
-	void Press(CPoint pos);
-	void RightPress(CPoint pos);
-	void DoubleClick(CPoint pos);
-	void Release(CPoint pos);
-	void RightRelease(CPoint pos);
-	void Remove();
+	void Press(CPoint pos);  // 鼠标左键按下
+	void DoubleClick(CPoint pos);  // 鼠标左键双击
+	void Release(CPoint pos);  // 鼠标左键释放
+	void RightPress(CPoint pos);  // 鼠标右键按下
+	void RightRelease(CPoint pos);  // 鼠标右键释放
+	void Remove();  // 删除图元操作
 	//void Redraw(CPoint pos, int type, bool highlight);
 	//void Redraw();
 	void Draw(Element *doce, Diagram *docd, bool original, CPoint pos, CDC *pDC);

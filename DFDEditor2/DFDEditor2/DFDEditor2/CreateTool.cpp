@@ -24,7 +24,7 @@ void CreateTool::Move(CPoint pos, CPoint oldpos){
 void CreateTool::Release(CPoint pos){
 	Element *e;
 	this->CreateElement(pos, e);
-	currentd->add(e);
+	currentd->Add(e);
 	this->SetCurrentE(e);
 	de->EndCreate(e);
 }

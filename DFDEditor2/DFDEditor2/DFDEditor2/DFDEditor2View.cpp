@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CDFDEditor2View, CView)
 	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_32776, &CDFDEditor2View::OnLookup)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CDFDEditor2View 构造/析构
@@ -349,3 +350,15 @@ void CDFDEditor2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 }
 
 
+
+
+void CDFDEditor2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	if (nChar == VK_DELETE)
+	{
+		CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+		pMainFrame->de->Remove();
+	}
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}

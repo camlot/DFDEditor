@@ -178,7 +178,30 @@ void DiagramEditor::RightRelease(CPoint pos){
 	}
 }
 void DiagramEditor::Remove(){
-
+	queue<Stream*> tmpQueue;
+	if (currente)  // 如果currente非空
+	{
+		//将所有与连接线相关的指针置空
+		if (!currente->isStream())
+		{
+			int startNum = currentd->FindStreams(currente, tmpQueue);
+			while (startNum > 0)
+			{
+				tmpQueue.front()->SetStartElement(NULL);
+				tmpQueue.pop();
+				startNum--;
+			}
+			while (!tmpQueue.empty())
+			{
+				tmpQueue.front()->SetEndElement(NULL);
+				tmpQueue.pop();
+			}
+		}
+		currentd->Remove(currente);
+	}
+	delete currente;
+	currente = NULL;
+	Redraw(false);
 }
 /*void DiagramEditor::Redraw(CPoint pos,int type, bool highlight){
 	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
