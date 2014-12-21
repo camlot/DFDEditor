@@ -100,11 +100,11 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 			//de->Redraw(false);
 			//d = NULL;
 
-			if (e->isProcess()){ // 如果该图元是Process
-				DFDProcess *temppe = (DFDProcess*)e;
+			if (currente->isProcess()){ // 如果该图元是Process
+				DFDProcess *temppe = (DFDProcess*)currente;  //
 				if (temppe->hasSubDiagram()){
-					h = de->SearchDiagramtoProcess(d);
-					this->OpenDiagramtoProcess(h, d);
+					h = de->SearchDiagramtoProcess(currentd);  //
+					this->OpenDiagramtoProcess(h, currentd);   //
 				}
 				//h = de->SearchDiagramtoProcess(d);
 				//if (h && d) OpenDiagramtoProcess(h, d);
@@ -139,17 +139,21 @@ void EditTool::Move(CPoint pos, CPoint oldpos){
 		}
 		else{
 			queue<Stream*> streamq;
-			int startNum = currentd->FindStreams(currente, streamq);  // 查找与原移动图元连接的连接线
 			currente->Offset(pos, oldpos);
+			int startNum = currentd->FindStreams(currente, streamq);  // 查找与原移动图元连接的连接线
 			while (startNum > 0)
 			{
-				streamq.front()->SetStartElement(currente);
+				//streamq.front()->SetStartElement(currente);
+				//streamq.front()->SetStart(streamq.front()->GetStart() + (pos - oldpos));
+				streamq.front()->StartFollowElement(currente);
 				streamq.pop();
 				startNum--;
 			}
 			while (!streamq.empty())
 			{
-				streamq.front()->SetEndElement(currente);
+				//streamq.front()->SetEndElement(currente);
+				//streamq.front()->SetEnd(streamq.front()->GetEnd() + (pos - oldpos));
+				streamq.front()->EndFollowElement(currente);
 				streamq.pop();
 			}
 			//de->Highlight();
@@ -187,13 +191,14 @@ void EditTool::Release(CPoint pos){
 
 	}
 	else if (currente){
-		currentd->SetElementforStreambyElement(currente, pos);
+		currentd->SetElementforStreambyElement(currente, currente->GetMidPoint());
 	}
 	else{}
 	if (currente && currente->isStream()){
 		Stream *tempse = (Stream*)currente;
 	     tempse->SetControlState(0);
 	}
+	de->Redraw(false);
 }
 void EditTool::RightRelease(CPoint pos){
 	CDlg dlg; 
