@@ -2,16 +2,16 @@
 #include "Element.h"
 
 Element::Element(){
-
+	this->isHighlight = false;
 }
 
 Element::~Element()
 {
 }
-CPoint Element::getmidPoint(){
+CPoint Element::GetMidPoint(){
 	return midPoint;
 }
-CString Element::getText(){
+CString Element::GetText(){
 	return text;
 }
 void Element::SetText(CString s){ // 设置图元文本
@@ -35,4 +35,15 @@ bool Element::isDataStorage(){
 }
 void Element::Offset(CPoint pos, CPoint oldpos){ // 位移（移动图元）
 	this->midPoint += pos - oldpos;
+}
+
+void Element::SetHighlightFlag(bool isHighlight)
+{
+	this->isHighlight = isHighlight;
+}
+
+bool Element::GetHighlightFlag()
+{
+	bool high = this->isHighlight;
+	return this->isHighlight;
 }

@@ -97,7 +97,7 @@ void Diagram::Remove(Element *e){
 	if (e)
 	{
 		for (it = elems.begin(); it != elems.end();){
-			if (e->getmidPoint() == (*it)->getmidPoint()){  // 如果图元的中点相同
+			if (e->GetMidPoint() == (*it)->GetMidPoint()){  // 如果图元的中点相同
 				it = elems.erase(it);
 			}
 			else
@@ -116,22 +116,22 @@ void Diagram::Remove(Element *e){
 	}*/
 
 
-void Diagram::DrawDiagram(vector<CPoint>&poss, vector<int>&types, vector<CString>&strs,CPoint startmidend[][3]){
+void Diagram::DrawDiagram(vector<CPoint>&poss, vector<int>&types, vector<CString>&strs, CPoint startmidend[][3]){
 
 	vector<Element*>::iterator it;
 	int i = 0;
 	Stream *tempse;
 	for (it = elems.begin(); it != elems.end(); it++){
-		poss.push_back((*it)->getmidPoint());
+		poss.push_back((*it)->GetMidPoint());
 		if ((*it)->isSource()) types.push_back(1);
 		else if ((*it)->isProcess()) types.push_back(2);
 		else if ((*it)->isDataStorage()) types.push_back(3);
 		else types.push_back(4);
-		strs.push_back((*it)->getText());
+		strs.push_back((*it)->GetText());
 		if ((*it)->isStream()){
 			tempse = (Stream*)(*it);
 			startmidend[i][0] = tempse->GetStart();
-			startmidend[i][1] = tempse->getmidPoint();
+			startmidend[i][1] = tempse->GetMidPoint();
 			startmidend[i][2] = tempse->GetEnd();
 			i++;
 		}
@@ -176,23 +176,82 @@ void Diagram::FindStreams(vector<Element*>& elemq) //传入EndElement传出所有Strea
 {
 	vector<Element*>::iterator it;
 	Stream* tmp;
-	vector<Element*> midElems = elemq;
-	elemq.clear();
-	int endElemNum = midElems.size();  //获取终点节点数目
-	while (!midElems.empty()){  //中间节点不为空
+	int endElemNum = elemq.size();  //获取终点节点数目
+	while (!elemq.empty()){  //中间节点不为空
 		for (it = elems.begin(); it != elems.end(); it++){
 			if ((*it)->isStream())
-
 			{
 				tmp = (Stream*)(*it);
-				if (tmp->getEndElement()->getmidPoint() == midElems.front()->getmidPoint())  // Stream终点图元为传入图元时
+				if (!tmp->getStartElement()->isDataStorage())
 				{
-					elemq.push_back(tmp);  //传出流
-					midElems.push_back(tmp->getStartElement());
+					if (tmp->getEndElement()->GetMidPoint() == elemq.front()->GetMidPoint())  // Stream终点图元为传入图元时
+					{
+						tmp->SetHighlightFlag(true);
+						//elemq.push_back(tmp);  //传出流
+						elemq.push_back(tmp->getStartElement());
+					}
 				}
 			}
 		}
-		midElems.erase(midElems.begin());  //第一个元素清除
+		elemq.erase(elemq.begin());  //第一个元素清除
 		endElemNum--;
 	}
 }
+
+void Diagram::Highlight(CDC *pDC)
+{
+	CPen *pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
+	pDC->SelectObject(pen);
+	vector<Element*>::iterator it;
+	Stream *tempse(NULL);
+	CPoint start(0, 0), mid(0, 0), end(0, 0);
+	CPoint mp;
+	for (it = elems.begin(); it != elems.end(); it++)
+	{
+		if ((*it)->isStream() && (*it)->GetHighlightFlag())
+		{
+			tempse = (Stream*)(*it);
+			mp = (*it)->GetMidPoint();
+			start = tempse->GetStart();
+			end = tempse->GetEnd();
+			mid = tempse->GetMidPoint();
+			pDC->MoveTo(start.x, start.y);
+			pDC->LineTo(start.x, mid.y);
+			pDC->LineTo(end.x, mid.y);
+			pDC->LineTo(end.x, end.y);
+
+			if (mid.y < end.y)  //箭头朝下
+			{
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x - 10, end.y - 20);
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x + 10, end.y - 20);
+			}
+			else if (mid.y > end.y) //箭头朝上
+			{
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x + 10, end.y + 20);
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x - 10, end.y + 20);
+			}
+			else  {
+				if (mid.x < end.x)  //箭头朝右
+				{
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x - 20, end.y - 10);
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x - 20, end.y + 10);
+				}
+				else  //箭头朝左
+				{
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x + 20, end.y - 10);
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x + 20, end.y + 10);
+				}
+			}
+		}
+		pDC->TextOutW(mp.x - 20, mp.y - 10, (*it)->GetText());
+	}
+}
+

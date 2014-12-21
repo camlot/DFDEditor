@@ -324,6 +324,7 @@ void CDFDEditor2View::OnRButtonDown(UINT nFlags, CPoint point)
 	//CView::OnRButtonDown(nFlags, point);
 	GetDocument()->SetPos(point);
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
 	pMainFrame->de->RightPress(point);
 }
 

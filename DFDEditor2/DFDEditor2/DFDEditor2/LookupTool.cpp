@@ -29,9 +29,8 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 
 		if (d->Find(pos, e) && e->isSource()){  // 点中Source（查找路径终点）
 			FindRoutes(d,e);  // 传入
-			///////////////////////////
-			/*de->SetCurrentE(e); 
-			de->Highlight(); *//////////////////////////
+			de->SetCurrentE(e); 
+			//de->Highlight();
 		}
 		else{  // 未点中Source
 			//this->ClearCurrentE();
@@ -40,6 +39,7 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 			//de->Redraw(pos, 0, false);  // 高亮
 
 		}
+		de->Redraw(false);
 	}
 }
 

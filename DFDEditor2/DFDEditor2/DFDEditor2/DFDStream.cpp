@@ -95,10 +95,10 @@ bool Stream::EndisInfieldof(Element *e, CPoint pos){
 }
 bool Stream::Contains(CPoint pos){ 
 
-	int Maxx = (start.x > this->getmidPoint().x ? (start.x > end.x ? start.x : end.x) : (this->getmidPoint().x > end.x ? this->getmidPoint().x : end.x));
-	int Maxy = (start.y > this->getmidPoint().y ? (start.y > end.y ? start.y : end.y) : (this->getmidPoint().y > end.y ? this->getmidPoint().y : end.y));
-	int Minx = (start.x < this->getmidPoint().x ? (start.x < end.x ? start.x : end.x) : (this->getmidPoint().x < end.x ? this->getmidPoint().x : end.x));
-	int Miny = (start.y < this->getmidPoint().y ? (start.y < end.y ? start.y : end.y) : (this->getmidPoint().y < end.y ? this->getmidPoint().y : end.y));
+	int Maxx = (start.x > this->GetMidPoint().x ? (start.x > end.x ? start.x : end.x) : (this->GetMidPoint().x > end.x ? this->GetMidPoint().x : end.x));
+	int Maxy = (start.y > this->GetMidPoint().y ? (start.y > end.y ? start.y : end.y) : (this->GetMidPoint().y > end.y ? this->GetMidPoint().y : end.y));
+	int Minx = (start.x < this->GetMidPoint().x ? (start.x < end.x ? start.x : end.x) : (this->GetMidPoint().x < end.x ? this->GetMidPoint().x : end.x));
+	int Miny = (start.y < this->GetMidPoint().y ? (start.y < end.y ? start.y : end.y) : (this->GetMidPoint().y < end.y ? this->GetMidPoint().y : end.y));
 
 	if (pos.x >= Minx-5 && pos.x <= Maxx+5 &&
 		pos.y >=Miny-5 && pos.y <=Maxy+5){
@@ -118,8 +118,8 @@ void Stream::SetStartElement(Element *e){
 	if (e != NULL)
 	{
 		this->startE = e;
-		this->start.x = e->getmidPoint().x;
-		this->start.y = e->getmidPoint().y + 10;
+		this->start.x = e->GetMidPoint().x;
+		this->start.y = e->GetMidPoint().y + 10;
 		midPoint.SetPoint((this->start.x + this->end.x) / 2, this->midPoint.y);
 	}
 }
@@ -127,8 +127,8 @@ void Stream::SetEndElement(Element *e){
 	if (e != NULL)
 	{
 		this->endE = e;
-		this->end.x = e->getmidPoint().x;
-		this->end.y = e->getmidPoint().y + 10;
+		this->end.x = e->GetMidPoint().x;
+		this->end.y = e->GetMidPoint().y + 10;
 		midPoint.SetPoint((this->start.x + this->end.x) / 2, this->midPoint.y);
 	}
 }

@@ -97,8 +97,8 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 			//this->SetCurrentE(e);
 			de->SetCurrentE(e);
 			//de->Highlight();
-			de->Redraw(false);
-			d = NULL;
+			//de->Redraw(false);
+			//d = NULL;
 
 			if (e->isProcess()){ // 如果该图元是Process
 				DFDProcess *temppe = (DFDProcess*)e;

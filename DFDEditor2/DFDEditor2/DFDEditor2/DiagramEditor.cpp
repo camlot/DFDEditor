@@ -51,7 +51,7 @@ void DiagramEditor::InsertMap(HWND hWnd, Diagram *d){
 void DiagramEditor::Menu(int item){
 	this->ClearCurrentE();
 	switch (item){
-	case 1: 
+	case 1:
 		SetCurrentTool(rt);
 		break;
 	case 2: SetCurrentTool(et);
@@ -141,6 +141,10 @@ void DiagramEditor::RightPress(CPoint pos){
 	if (!hWnd) AfxMessageBox(_T("Top Window Not Found!"));
 
 	//edt->RightPress(pos, hWnd);
+	if (currenttool->GetType() == LOOKUPTOOL)  // 右击释放lookuptool并改为edittool
+	{
+		Menu(2);
+	}
 	EditTool *newet = (EditTool*)currenttool;
 	newet->RightPress(pos, hWnd);
 }
@@ -150,7 +154,7 @@ void DiagramEditor::DoubleClick(CPoint pos){
 	HWND hWnd = cpChildFrame->m_hWnd;
 
 	if (!hWnd) AfxMessageBox(_T("Top Window Not Found!"));
-	
+
 	if (currenttool->GetType() == EDITTOOL)
 	{
 		EditTool *newet = (EditTool*)currenttool;
@@ -208,14 +212,14 @@ void DiagramEditor::Remove(){
 	cpView->SetXY(pos.x, pos.y, type, highlight);
 	cpView->GetDocument()->d = currentd;
 	cpView->Invalidate();
-}
-void DiagramEditor::Redraw(){
+	}
+	void DiagramEditor::Redraw(){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
 	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
 	cpView->GetDocument()->d = currentd;
 	cpView->Invalidate();
-}*/
+	}*/
 void DiagramEditor::Redraw(bool original){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
@@ -254,15 +258,15 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 		int i = 0;
 		for (it1 = poss.begin(), it2 = types.begin(), it3 = strs.begin(); it1 != poss.end(); it1++, it2++, it3++){
 			switch ((*it2)){
-			case 1: 
+			case 1:
 				pDC->Rectangle((*it1).x - 60, (*it1).y - 40, (*it1).x + 60, (*it1).y + 40);
 				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				break;
-			case 2: 
+			case 2:
 				pDC->Ellipse((*it1).x - 50, (*it1).y - 50, (*it1).x + 50, (*it1).y + 50);
 				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				break;
-			case 3: 
+			case 3:
 				pDC->MoveTo((*it1).x - 60, (*it1).y + 20);
 				pDC->LineTo((*it1).x + 60, (*it1).y + 20);
 				pDC->MoveTo((*it1).x - 60, (*it1).y + 40);
@@ -275,7 +279,7 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 				pDC->LineTo(startmidend[i][2].x, startmidend[i][1].y);
 				pDC->LineTo(startmidend[i][2].x, startmidend[i][2].y);//最终点
 
-				if (startmidend[i][1].y<startmidend[i][2].y)   //箭头朝下
+				if (startmidend[i][1].y < startmidend[i][2].y)   //箭头朝下
 				{
 					pDC->LineTo(startmidend[i][2].x + 10, startmidend[i][2].y - 20);
 					pDC->MoveTo(startmidend[i][2].x, startmidend[i][2].y);
@@ -287,7 +291,7 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 					pDC->MoveTo(startmidend[i][2].x, startmidend[i][2].y);
 					pDC->LineTo(startmidend[i][2].x + 10, startmidend[i][2].y + 20);
 				}
-				else if (startmidend[i][1].y == startmidend[i][2].y) 
+				else if (startmidend[i][1].y == startmidend[i][2].y)
 				{
 					if (startmidend[i][1].x < startmidend[i][2].x)  //箭头朝右
 					{
@@ -302,8 +306,8 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 
 					}
 				}
-				
-				
+
+
 				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				i++;
 				break;
@@ -317,14 +321,14 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 		this->Highlight(pDC);
 	}
 	//if (currente && cpChildFrame == (CChildFrame*)cpMainFrame->GetActiveFrame()){
-		//this->Highlight(pDC);
+	//this->Highlight(pDC);
 	//}
 
 }
-void DiagramEditor::DrawOriginal(CDC *pDC,CPoint pos){
+void DiagramEditor::DrawOriginal(CDC *pDC, CPoint pos){
 	//if (highlight){
-		//pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
-		//MemDC.SelectObject(pen);
+	//pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
+	//MemDC.SelectObject(pen);
 	//}
 	if (currenttool == rt){
 		pDC->Rectangle(pos.x - 60, pos.y - 40, pos.x + 60, pos.y + 40);
@@ -339,7 +343,7 @@ void DiagramEditor::DrawOriginal(CDC *pDC,CPoint pos){
 		pDC->LineTo(pos.x + 60, pos.y + 40);
 	}
 	else if (currenttool == st){
-		
+
 		//st->SetCurrentE(currente);
 		//Stream *tempse = (Stream*)currente;
 		//CPoint start = tempse->GetStart();
@@ -348,93 +352,98 @@ void DiagramEditor::DrawOriginal(CDC *pDC,CPoint pos){
 		pDC->LineTo(pos.x - 60, pos.y);
 		pDC->LineTo(pos.x + 60, pos.y);
 		pDC->LineTo(pos.x + 60, pos.y + 40);
-	
-		
+
+
 	}
 	else{}
 	/*switch (type){
 	case 1: pDC->Rectangle(pos.x - 60, pos.y - 40, pos.x + 60, pos.y + 40);
-		break;
+	break;
 	case 2: pDC->Ellipse(pos.x - 50, pos.y - 50, pos.x + 50, pos.y + 50);
-		break;
+	break;
 	case 3: pDC->MoveTo(pos.x - 60, pos.y + 20);
-		pDC->LineTo(pos.x + 60, pos.y + 20);
-		pDC->MoveTo(pos.x - 60, pos.y + 40);
-		pDC->LineTo(pos.x + 60, pos.y + 40);
-		break;
+	pDC->LineTo(pos.x + 60, pos.y + 20);
+	pDC->MoveTo(pos.x - 60, pos.y + 40);
+	pDC->LineTo(pos.x + 60, pos.y + 40);
+	break;
 	case 4: pDC->MoveTo(pos.x - 60, pos.y - 40);
-		pDC->LineTo(pos.x - 60, pos.y);
-		pDC->LineTo(pos.x + 60, pos.y);
-		pDC->LineTo(pos.x + 60, pos.y + 40);
-		break;
+	pDC->LineTo(pos.x - 60, pos.y);
+	pDC->LineTo(pos.x + 60, pos.y);
+	pDC->LineTo(pos.x + 60, pos.y + 40);
+	break;
 	default:;
 	}*/
 }
 /*void DiagramEditor::Highlight(){
 	this->Redraw(currente->midPoint, currente->type, true);
-}*/
+	}*/
 void DiagramEditor::Highlight(CDC *pDC){
 	CPen *pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
 	pDC->SelectObject(pen);
-	CPoint mp = currente->getmidPoint();
-	if (currente->isSource()){
-		pDC->Rectangle(mp.x - 60, mp.y - 40, mp.x + 60, mp.y + 40);
-	}
-	else if (currente->isProcess()){
-		pDC->Ellipse(mp.x - 50, mp.y - 50, mp.x + 50, mp.y + 50);
-	}
-	else if (currente->isDataStorage()){
-		pDC->MoveTo(mp.x - 60, mp.y + 20);
-		pDC->LineTo(mp.x + 60, mp.y + 20);
-		pDC->MoveTo(mp.x - 60, mp.y + 40);
-		pDC->LineTo(mp.x + 60, mp.y + 40);
-	}
-	else{
-		Stream *tempse = (Stream*)currente;
-		CPoint start = tempse->GetStart();
-		CPoint end = tempse->GetEnd();
-		CPoint mid = tempse->getmidPoint();
-		pDC->MoveTo(start.x, start.y);
-		pDC->LineTo(start.x, mid.y);
-		pDC->LineTo(end.x, mid.y);
-		pDC->LineTo(end.x, end.y);
-	
-		if (mid.y<end.y)  //箭头朝下
-	{	
-		pDC->MoveTo(end.x, end.y); 
-		pDC->LineTo(end.x - 10, end.y - 20);
-		pDC->MoveTo(end.x, end.y);
-		pDC->LineTo(end.x + 10, end.y - 20);
-	}
-		else if (mid.y>end.y) //箭头朝上
-		{
-			pDC->MoveTo(end.x, end.y);
-			pDC->LineTo(end.x + 10, end.y + 20);
-			pDC->MoveTo(end.x, end.y);
-			pDC->LineTo(end.x - 10, end.y + 20);
-		}
-		else  {
-			if (mid.x<end.x)  //箭头朝右
-			{
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x - 20, end.y - 10);
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x - 20, end.y + 10);
-			} 
-			else  //箭头朝左
-			{
-				
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x + 20, end.y - 10);
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x + 20, end.y +10);
-			}
-		}
-		
-		
+	if (currenttool->GetType() == LOOKUPTOOL)
+	{
+		currentd->Highlight(pDC);
 		this->Focus(pDC);
 	}
-	pDC->TextOutW(mp.x - 20, mp.y - 10, currente->getText());
+	else{
+		CPoint mp = currente->GetMidPoint();
+		if (currente->isSource()){
+			pDC->Rectangle(mp.x - 60, mp.y - 40, mp.x + 60, mp.y + 40);
+		}
+		else if (currente->isProcess()){
+			pDC->Ellipse(mp.x - 50, mp.y - 50, mp.x + 50, mp.y + 50);
+		}
+		else if (currente->isDataStorage()){
+			pDC->MoveTo(mp.x - 60, mp.y + 20);
+			pDC->LineTo(mp.x + 60, mp.y + 20);
+			pDC->MoveTo(mp.x - 60, mp.y + 40);
+			pDC->LineTo(mp.x + 60, mp.y + 40);
+		}
+		else{
+			Stream *tempse = (Stream*)currente;
+			CPoint start = tempse->GetStart();
+			CPoint end = tempse->GetEnd();
+			CPoint mid = tempse->GetMidPoint();
+			pDC->MoveTo(start.x, start.y);
+			pDC->LineTo(start.x, mid.y);
+			pDC->LineTo(end.x, mid.y);
+			pDC->LineTo(end.x, end.y);
+
+			if (mid.y < end.y)  //箭头朝下
+			{
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x - 10, end.y - 20);
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x + 10, end.y - 20);
+			}
+			else if (mid.y > end.y) //箭头朝上
+			{
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x + 10, end.y + 20);
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x - 10, end.y + 20);
+			}
+			else  {
+				if (mid.x < end.x)  //箭头朝右
+				{
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x - 20, end.y - 10);
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x - 20, end.y + 10);
+				}
+				else  //箭头朝左
+				{
+
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x + 20, end.y - 10);
+					pDC->MoveTo(end.x, end.y);
+					pDC->LineTo(end.x + 20, end.y + 10);
+				}
+			}
+			this->Focus(pDC);
+		}
+		pDC->TextOutW(mp.x - 20, mp.y - 10, currente->GetText());
+	}
 }
 void DiagramEditor::Move(CPoint pos, CPoint oldpos){
 	currenttool->Move(pos, oldpos);
@@ -447,7 +456,7 @@ void DiagramEditor::Focus(CDC *pDC){
 	//pen->CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
 	pen = new CPen(PS_SOLID, 2, RGB(0, 0, 255));
 	pDC->SelectObject(pen);
-	
+
 	pDC->MoveTo(tempse->GetEnd().x, tempse->GetEnd().y);
 	pDC->LineTo(tempse->GetEnd().x - 5, tempse->GetEnd().y - 5);
 	pDC->MoveTo(tempse->GetEnd().x - 5, tempse->GetEnd().y + 5);
@@ -465,20 +474,20 @@ void DiagramEditor::EndCreate(Element *e){
 }
 /*void DiagramEditor::UpdateText(CString s){
 	currente->SetText(s);
-}
-void DiagramEditor::UpdatePosition(CPoint pos){
+	}
+	void DiagramEditor::UpdatePosition(CPoint pos){
 	currente->Offset(pos);
-}*/
+	}*/
 HWND DiagramEditor::SearchDiagramtoProcess(Diagram *&d){
 	HWND hWnd = currentd->SearchWnd(currente);
-	if(hWnd) this->SearchDiagram(hWnd, d);  // d是返回值
+	if (hWnd) this->SearchDiagram(hWnd, d);  // d是返回值
 	return hWnd;
 	/*map<Element*, Diagram*>::iterator it;
 	for (it = ElementtoDiagram.begin(); it != ElementtoDiagram.end(); it++){
-		if (it->first == currente){
-			d = it->second;
-		}
-		break;
+	if (it->first == currente){
+	d = it->second;
+	}
+	break;
 	}*/
 }
 /*void DiagramEditor::CreateDiagramtoProcess(){
@@ -492,4 +501,4 @@ HWND DiagramEditor::SearchDiagramtoProcess(Diagram *&d){
 	oldD->InsertMap(currente, hWnd);
 	currente->setSubDiagram();
 	ClearCurrentE();
-}*/
+	}*/
