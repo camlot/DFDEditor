@@ -17,9 +17,13 @@ public:
 	int GetState();
 	CPoint GetStart();
 	CPoint GetEnd();
+	void SetStart(CPoint pos);
+	void SetEnd(CPoint pos);
 	void ContainsPoint(CPoint pos);
 	void Onsize(CPoint pos);
 	void Offset(CPoint pos, CPoint oldpos);
+	void StartFollowElement(Element *e);
+	void EndFollowElement(Element *e);
 	bool Contains(CPoint pos);  // 移动的时候需要找mid点，end点和start点的最小和最大界，然后判断是否包含
 	bool CompareStartElementWith(Element *e);
 	bool CompareEndElementWith(Element *e);

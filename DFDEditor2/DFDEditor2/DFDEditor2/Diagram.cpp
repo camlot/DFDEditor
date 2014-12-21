@@ -58,9 +58,11 @@ void Diagram::SetElementforStreambyElement(Element *e, CPoint pos){
 			else{
 				if (tempse->StartisInfieldof(e, pos)){
 					tempse->SetStartElement(e);
+					tempse->StartFollowElement(e);
 				}
 				if (tempse->EndisInfieldof(e, pos)){
 					(tempse->SetEndElement(e));
+					tempse->EndFollowElement(e);
 				}
 			}
 		}
@@ -75,6 +77,7 @@ void Diagram::SetStartElementforStream(Stream *se, CPoint pos){
 			}
 			else if ((*it)->Contains(pos)){
 				se->SetStartElement(*it);
+				se->StartFollowElement((*it));
 			}
 		}
 	}
@@ -88,6 +91,7 @@ void Diagram::SetEndElementforStream(Stream *se, CPoint pos){
 			}
 			else if ((*it)->Contains(pos)){
 				se->SetEndElement(*it);
+				se->EndFollowElement((*it));
 			}
 		}
 	}
