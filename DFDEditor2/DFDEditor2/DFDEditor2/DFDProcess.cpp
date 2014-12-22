@@ -8,7 +8,8 @@ DFDProcess::DFDProcess(int type, CPoint midPoint, CString text)
 	this->midPoint = midPoint;
 	this->text = text;
 	this->radix = 50;
-	subDiagramState = false;
+	this->subDiagramState = false;
+	this->onRoutes = false;
 }
 
 
@@ -28,4 +29,14 @@ bool DFDProcess::Contains(CPoint pos){
 		return true;
 	}
 	else return false;
+}
+
+void DFDProcess::setOnRoutes(bool has)
+{
+	this->onRoutes = has;
+}
+
+bool DFDProcess::getOnRoutes()
+{
+	return this->onRoutes;
 }

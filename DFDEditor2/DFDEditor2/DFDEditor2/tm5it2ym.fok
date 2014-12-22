@@ -143,7 +143,7 @@ void DiagramEditor::RightPress(CPoint pos){
 	//edt->RightPress(pos, hWnd);
 	if (currenttool->GetType() == LOOKUPTOOL)  // 右击释放lookuptool并改为edittool
 	{
-		this->SetCurrentTool(edt);
+		Menu(2);
 	}
 	EditTool *newet = (EditTool*)currenttool;
 	newet->RightPress(pos, hWnd);
@@ -179,12 +179,6 @@ void DiagramEditor::RightRelease(CPoint pos){
 		EditTool *newet = (EditTool*)currenttool;
 		newet->RightRelease(pos);
 		ClearCurrentTool();
-	}
-}
-void DiagramEditor::ExitEdit(){
-	if (currenttool->GetType() == EDITTOOL){
-		EditTool *newet = (EditTool*)currenttool;
-		newet->GotoFatherWnd();
 	}
 }
 void DiagramEditor::Remove(){
