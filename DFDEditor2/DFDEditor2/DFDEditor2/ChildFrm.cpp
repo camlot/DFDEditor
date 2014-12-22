@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "DFDEditor2.h"
+#include"MainFrm.h"
 
 #include "ChildFrm.h"
 
@@ -17,6 +18,7 @@ IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWnd)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWnd)
 	ON_COMMAND(ID_32772, &CChildFrame::OnDiagram)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CChildFrame 构造/析构
@@ -67,4 +69,11 @@ void CChildFrame::OnDiagram()
 
 	Diagram *d = new Diagram();
 	pMainFrame->de->InsertMap(hWnd, d);*/
+}
+
+
+void CChildFrame::OnClose()
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	this->ShowWindow(SW_HIDE);
 }

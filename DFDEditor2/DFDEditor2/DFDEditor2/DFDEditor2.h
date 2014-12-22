@@ -28,6 +28,7 @@ public:
 // й╣ож
 	afx_msg void OnAppAbout();
 	afx_msg void OnFileNew();
+	afx_msg void OnCancel();
 	DECLARE_MESSAGE_MAP()
 };
 

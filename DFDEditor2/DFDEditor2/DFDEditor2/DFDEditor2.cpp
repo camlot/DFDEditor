@@ -193,4 +193,6 @@ void CDFDEditor2App::OnFileNew(){
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	pMainFrame->de->AddDiagram();
 }
+void CDFDEditor2App::OnCancel(){
 
+}
