@@ -5,6 +5,7 @@
 
 Diagram::Diagram()
 {
+	fatherhWnd = NULL;
 }
 
 
@@ -32,7 +33,12 @@ bool Diagram::Find(CPoint pos, Element *&e){
 	return false;
 }
 
-
+HWND Diagram::getFatherWnd(){
+	return this->fatherhWnd;
+}
+void Diagram::setFatherWnd(HWND hWnd){
+	this->fatherhWnd = hWnd;
+}
 HWND Diagram::SearchWnd(Element *e){
 	HWND hWnd = NULL;
 	map<Element*, HWND>::iterator it;

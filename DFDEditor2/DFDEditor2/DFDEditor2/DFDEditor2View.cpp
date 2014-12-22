@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(CDFDEditor2View, CView)
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_32776, &CDFDEditor2View::OnLookup)
 	ON_WM_KEYDOWN()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CDFDEditor2View ¹¹Ôì/Îö¹¹
@@ -360,6 +361,11 @@ void CDFDEditor2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 		pMainFrame->de->Remove();
+	}
+	else if (nChar == VK_ESCAPE)
+	{
+		CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+		pMainFrame->de->ExitEdit();
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }

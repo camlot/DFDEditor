@@ -103,8 +103,8 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 			if (currente->isProcess()){ // 如果该图元是Process
 				DFDProcess *temppe = (DFDProcess*)currente;  //
 				if (temppe->hasSubDiagram()){
-					h = de->SearchDiagramtoProcess(currentd);  //
-					this->OpenDiagramtoProcess(h, currentd);   //
+					h = de->SearchDiagramtoProcess(d);  //不能直接用currentd，因为此处指的是edittool的currente，变成功之后，diagrameditor中的currente没变，所以redraw时候set给doc的currente还是没变（因为用的是diagrameditor中的currente）
+					this->OpenDiagramtoProcess(h, d);   //
 				}
 				//h = de->SearchDiagramtoProcess(d);
 				//if (h && d) OpenDiagramtoProcess(h, d);
@@ -211,17 +211,31 @@ void EditTool::RightRelease(CPoint pos){
 	de->Redraw(false);
 
 }
+void EditTool::GotoFatherWnd(){
+	HWND hWnd = currentd->getFatherWnd();
+	if (hWnd){
+		Diagram *d = NULL;
+		de->SearchDiagram(hWnd, d);
+		this->OpenDiagramtoProcess(hWnd, d);
+	}
+	else{
+		AfxMessageBox(_T("This is top!"));
+	}
+}
 void EditTool::Remove(Element *currente){
 
 }
 void EditTool::CreateNewDiagram(){
 	Diagram *oldD = currentd;
-	::SendMessage(::AfxGetMainWnd()->m_hWnd, WM_COMMAND, ID_FILE_NEW, 0);
 	CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	HWND oldhWnd = ((CChildFrame*)pMainFrame->GetActiveFrame())->m_hWnd;
+	::SendMessage(::AfxGetMainWnd()->m_hWnd, WM_COMMAND, ID_FILE_NEW, 0);
+	//CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	CChildFrame *pChildFrame = (CChildFrame*)pMainFrame->GetActiveFrame();
 	HWND hWnd = pChildFrame->m_hWnd;
 	if (!hWnd) AfxMessageBox(_T("Top Window Not found!"));
 
+	currentd->setFatherWnd(oldhWnd);
 	oldD->InsertMap(currente, hWnd);
 	DFDProcess *temppe = (DFDProcess*)currente;
 	temppe->setSubDiagram();

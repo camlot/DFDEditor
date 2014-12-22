@@ -16,6 +16,7 @@ public:
 	void Move(CPoint pos, CPoint oldpos);  // 移动图元
 	void Release(CPoint pos);  //
 	void RightRelease(CPoint pos);
+	void GotoFatherWnd();
 	void Remove(Element *currente);
 	void CreateNewDiagram();
 	void OpenDiagramtoProcess(HWND hWnd, Diagram *d);  // 打开Process的子图

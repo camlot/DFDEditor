@@ -17,6 +17,7 @@ using std::queue;
 class Diagram
 {
 private:
+	HWND fatherhWnd;
 	vector<Element*> elems;  // 保存图形中的图元
 	map<Element*, HWND> process2Diagram;   // 
 
@@ -25,6 +26,8 @@ public:
 	~Diagram();
 	void Add(Element* e);  // 添加图元
 	bool Find(CPoint pos, Element *&e);  // 根据坐标查找图元
+	HWND getFatherWnd();
+	void setFatherWnd(HWND hWnd);
 	HWND SearchWnd(Element *e);  // 查找图元（Process）对应的窗口句柄
 	void SetElementforStreambyElement(Element *e, CPoint pos); // e是除stream类型其他类型时使用
 	void SetStartElementforStream(Stream *se, CPoint pos);  // e是stream类型时使用

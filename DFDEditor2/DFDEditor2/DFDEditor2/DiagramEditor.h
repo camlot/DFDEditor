@@ -56,6 +56,7 @@ public:
 	void Release(CPoint pos);  // 鼠标左键释放
 	void RightPress(CPoint pos);  // 鼠标右键按下
 	void RightRelease(CPoint pos);  // 鼠标右键释放
+	void ExitEdit();
 	void Remove();  // 删除图元操作
 	//void Redraw(CPoint pos, int type, bool highlight);
 	//void Redraw();
