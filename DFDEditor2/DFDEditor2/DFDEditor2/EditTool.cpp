@@ -93,7 +93,7 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 		//this->SetCurrentD(d);
 		de->SetCurrentD(d);
 		d->Find(pos, e);
-		if (e){
+		if (e){  // 如果找到当前图元
 			//this->SetCurrentE(e);
 			de->SetCurrentE(e);
 			//de->Highlight();

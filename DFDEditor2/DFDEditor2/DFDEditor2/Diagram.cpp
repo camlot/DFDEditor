@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Diagram.h"
 #include"Element.h"
+#include "DFDProcess.h"
 #include"DFDStream.h"
 
 Diagram::Diagram()
@@ -192,9 +193,14 @@ void Diagram::FindStreams(vector<Element*>& elemq) //传入EndElement传出所有Strea
 			if ((*it)->isStream())
 			{
 				tmp = (Stream*)(*it);
-				if (!tmp->getStartElement()->isDataStorage())
+				if (tmp->getStartElement() != NULL && !tmp->getStartElement()->isDataStorage())
 				{
-					if (tmp->getEndElement()->GetMidPoint() == elemq.front()->GetMidPoint())  // Stream终点图元为传入图元时
+					if (tmp->getStartElement()->isProcess())
+					{
+						DFDProcess* tmpp = (DFDProcess*)tmp->getStartElement();
+						tmpp->setOnRoutes(true);
+					}
+					if (tmp->getEndElement() != NULL && tmp->getEndElement()->GetMidPoint() == elemq.front()->GetMidPoint())  // Stream终点图元为传入图元时
 					{
 						tmp->SetHighlightFlag(true);
 						//elemq.push_back(tmp);  //传出流
@@ -271,6 +277,48 @@ void Diagram::ClearHighlight()
 	for (it = elems.begin(); it != elems.end(); it++)
 	{
 		(*it)->SetHighlightFlag(false);
+	}
+}
+
+void Diagram::FindEndElements(vector<Element*>& endElements)
+{
+	if (!endElements.empty())
+	{
+		endElements.clear();
+	}
+	vector<Element*>::iterator it1, it2;
+	for (it1 = elems.begin(); it1 != elems.end(); it1++)
+	{
+		if ((*it1)->isStream())  // 是流
+		{
+			Stream* tmps = (Stream*)(*it1);
+			if (tmps->getEndElement()->isSource())
+			{
+				endElements.push_back(tmps->getEndElement());
+			}
+		}
+	}
+	if (!endElements.empty()) // 查找到的不为空
+	{
+		for (it1 = elems.begin(); it1 != elems.end(); it1++)
+		{
+			if ((*it1)->isStream())  // 是流
+			{
+				Stream* tmps = (Stream*)(*it1);
+				Element* startElem = tmps->getStartElement();
+				for (it2 = endElements.begin(); it2 != endElements.end();)
+				{
+					if (startElem == (*it2) && tmps->getEndElement() != NULL)  // 该图元是流的起始点且流的终止点不为空
+					{
+						it2 = endElements.erase(it2);
+					}
+					else
+					{
+						it2++;
+					}
+				}
+			}
+		}
 	}
 }
 

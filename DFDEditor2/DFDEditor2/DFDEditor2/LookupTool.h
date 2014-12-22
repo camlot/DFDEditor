@@ -17,7 +17,7 @@ public:
 	~LookupTool();
 	void Press(CPoint pos, HWND hWnd);
 	void DoubleClick(CPoint, HWND hWnd);
-	void FindRoutes(Diagram* d, Element *e);
+	void OpenDiagramtoProcess(HWND hWnd, Diagram *d);  // 打开Process的子图
 };
 
 
