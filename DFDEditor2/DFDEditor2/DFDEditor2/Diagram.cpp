@@ -209,7 +209,7 @@ void Diagram::Highlight(CDC *pDC)
 	vector<Element*>::iterator it;
 	Stream *tempse(NULL);
 	CPoint start(0, 0), mid(0, 0), end(0, 0);
-	CPoint mp;
+	CPoint mp(0,0);
 	for (it = elems.begin(); it != elems.end(); it++)
 	{
 		if ((*it)->isStream() && (*it)->GetHighlightFlag())
@@ -254,8 +254,17 @@ void Diagram::Highlight(CDC *pDC)
 					pDC->LineTo(end.x + 20, end.y + 10);
 				}
 			}
+			pDC->TextOutW(mp.x - 20, mp.y - 10, (*it)->GetText());
 		}
-		pDC->TextOutW(mp.x - 20, mp.y - 10, (*it)->GetText());
+	}
+}
+
+void Diagram::ClearHighlight()
+{
+	vector<Element*>::iterator it;
+	for (it = elems.begin(); it != elems.end(); it++)
+	{
+		(*it)->SetHighlightFlag(false);
 	}
 }
 

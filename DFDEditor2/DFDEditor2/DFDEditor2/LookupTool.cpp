@@ -22,7 +22,7 @@ LookupTool::~LookupTool()
 void LookupTool::Press(CPoint pos, HWND hWnd){
 	Diagram *d = NULL;
 	Element *e = NULL;
-
+	currentd->ClearHighlight();
 	this->Select(d, hWnd);  //根据窗口句柄找到图形
 	if (d){
 		de->SetCurrentD(d);  // 设置当前图形
@@ -40,6 +40,7 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 
 		}
 		de->Redraw(false);
+		//currentd->ClearHighlight();
 	}
 }
 

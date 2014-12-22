@@ -37,6 +37,7 @@ public:
 	int FindStreams(Element* currente, queue<Stream*>& elemq); // 根据结束图元查找所有以该图元为终点的路径
 	void FindStreams(vector<Element*>& elemq);  // 查找路径-找到该图中的连接线
 	void Highlight(CDC *pDC);
+	void ClearHighlight();
 };
 
 

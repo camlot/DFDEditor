@@ -380,69 +380,67 @@ void DiagramEditor::DrawOriginal(CDC *pDC, CPoint pos){
 void DiagramEditor::Highlight(CDC *pDC){
 	CPen *pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
 	pDC->SelectObject(pen);
+	CPoint mp = currente->GetMidPoint();
+	if (currente->isSource()){
+		pDC->Rectangle(mp.x - 60, mp.y - 40, mp.x + 60, mp.y + 40);
+	}
+	else if (currente->isProcess()){
+		pDC->Ellipse(mp.x - 50, mp.y - 50, mp.x + 50, mp.y + 50);
+	}
+	else if (currente->isDataStorage()){
+		pDC->MoveTo(mp.x - 60, mp.y + 20);
+		pDC->LineTo(mp.x + 60, mp.y + 20);
+		pDC->MoveTo(mp.x - 60, mp.y + 40);
+		pDC->LineTo(mp.x + 60, mp.y + 40);
+	}
+	else{
+		Stream *tempse = (Stream*)currente;
+		CPoint start = tempse->GetStart();
+		CPoint end = tempse->GetEnd();
+		CPoint mid = tempse->GetMidPoint();
+		pDC->MoveTo(start.x, start.y);
+		pDC->LineTo(start.x, mid.y);
+		pDC->LineTo(end.x, mid.y);
+		pDC->LineTo(end.x, end.y);
+
+		if (mid.y < end.y)  //¼ýÍ·³¯ÏÂ
+		{
+			pDC->MoveTo(end.x, end.y);
+			pDC->LineTo(end.x - 10, end.y - 20);
+			pDC->MoveTo(end.x, end.y);
+			pDC->LineTo(end.x + 10, end.y - 20);
+		}
+		else if (mid.y > end.y) //¼ýÍ·³¯ÉÏ
+		{
+			pDC->MoveTo(end.x, end.y);
+			pDC->LineTo(end.x + 10, end.y + 20);
+			pDC->MoveTo(end.x, end.y);
+			pDC->LineTo(end.x - 10, end.y + 20);
+		}
+		else  {
+			if (mid.x < end.x)  //¼ýÍ·³¯ÓÒ
+			{
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x - 20, end.y - 10);
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x - 20, end.y + 10);
+			}
+			else  //¼ýÍ·³¯×ó
+			{
+
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x + 20, end.y - 10);
+				pDC->MoveTo(end.x, end.y);
+				pDC->LineTo(end.x + 20, end.y + 10);
+			}
+		}
+		this->Focus(pDC);
+	}
+	pDC->TextOutW(mp.x - 20, mp.y - 10, currente->GetText());
 	if (currenttool->GetType() == LOOKUPTOOL)
 	{
 		currentd->Highlight(pDC);
 		this->Focus(pDC);
-	}
-	else{
-		CPoint mp = currente->GetMidPoint();
-		if (currente->isSource()){
-			pDC->Rectangle(mp.x - 60, mp.y - 40, mp.x + 60, mp.y + 40);
-		}
-		else if (currente->isProcess()){
-			pDC->Ellipse(mp.x - 50, mp.y - 50, mp.x + 50, mp.y + 50);
-		}
-		else if (currente->isDataStorage()){
-			pDC->MoveTo(mp.x - 60, mp.y + 20);
-			pDC->LineTo(mp.x + 60, mp.y + 20);
-			pDC->MoveTo(mp.x - 60, mp.y + 40);
-			pDC->LineTo(mp.x + 60, mp.y + 40);
-		}
-		else{
-			Stream *tempse = (Stream*)currente;
-			CPoint start = tempse->GetStart();
-			CPoint end = tempse->GetEnd();
-			CPoint mid = tempse->GetMidPoint();
-			pDC->MoveTo(start.x, start.y);
-			pDC->LineTo(start.x, mid.y);
-			pDC->LineTo(end.x, mid.y);
-			pDC->LineTo(end.x, end.y);
-
-			if (mid.y < end.y)  //¼ýÍ·³¯ÏÂ
-			{
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x - 10, end.y - 20);
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x + 10, end.y - 20);
-			}
-			else if (mid.y > end.y) //¼ýÍ·³¯ÉÏ
-			{
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x + 10, end.y + 20);
-				pDC->MoveTo(end.x, end.y);
-				pDC->LineTo(end.x - 10, end.y + 20);
-			}
-			else  {
-				if (mid.x < end.x)  //¼ýÍ·³¯ÓÒ
-				{
-					pDC->MoveTo(end.x, end.y);
-					pDC->LineTo(end.x - 20, end.y - 10);
-					pDC->MoveTo(end.x, end.y);
-					pDC->LineTo(end.x - 20, end.y + 10);
-				}
-				else  //¼ýÍ·³¯×ó
-				{
-
-					pDC->MoveTo(end.x, end.y);
-					pDC->LineTo(end.x + 20, end.y - 10);
-					pDC->MoveTo(end.x, end.y);
-					pDC->LineTo(end.x + 20, end.y + 10);
-				}
-			}
-			this->Focus(pDC);
-		}
-		pDC->TextOutW(mp.x - 20, mp.y - 10, currente->GetText());
 	}
 }
 void DiagramEditor::Move(CPoint pos, CPoint oldpos){
