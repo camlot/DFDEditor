@@ -17,7 +17,7 @@ public:
 	void Release(CPoint pos);
 	void RightRelease(CPoint pos);
 	void GotoFatherWnd();
-	void Remove(Element *currente);
+	void Remove();
 	void CreateNewDiagram();
 	void OpenDiagramtoProcess(HWND hWnd, Diagram *d);  // 打开Process的子图
 };

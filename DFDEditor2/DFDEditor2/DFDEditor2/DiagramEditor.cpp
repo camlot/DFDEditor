@@ -188,7 +188,7 @@ void DiagramEditor::ExitEdit(){
 	}
 }
 void DiagramEditor::Remove(){
-	queue<Stream*> tmpQueue;
+	/*queue<Stream*> tmpQueue;
 	if (currente)  // 如果currente非空
 	{
 		//将所有与连接线相关的指针置空
@@ -212,6 +212,11 @@ void DiagramEditor::Remove(){
 	delete currente;
 	currente = NULL;
 	Redraw(false);
+	*/
+	if (currenttool->GetType() == EDITTOOL){
+		EditTool *newet = (EditTool*)currenttool;
+		newet->GotoFatherWnd();
+	}
 }
 /*void DiagramEditor::Redraw(CPoint pos,int type, bool highlight){
 	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();

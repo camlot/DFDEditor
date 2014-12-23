@@ -205,7 +205,10 @@ void EditTool::RightRelease(CPoint pos){
 	int response = dlg.DoModal();
 	if (response == IDOK){
 		//de->UpdateText(dlg.newtext);
-		currente->SetText(dlg.newtext);
+		if (dlg.newtext != _T("")){
+			currente->SetText(dlg.newtext);
+		}
+		//currente->SetText(dlg.newtext);
 	}
 	//de->Highlight();
 	de->Redraw(false);
@@ -222,8 +225,32 @@ void EditTool::GotoFatherWnd(){
 		AfxMessageBox(_T("This is top!"));
 	}
 }
-void EditTool::Remove(Element *currente){
-
+void EditTool::Remove(){
+	queue<Stream*> tmpQueue;
+	if (currente)  // 如果currente非空
+	{
+		//将所有与连接线相关的指针置空
+		if (!currente->isStream())
+		{
+			int startNum = currentd->FindStreams(currente, tmpQueue);
+			while (startNum > 0)
+			{
+				tmpQueue.front()->SetStartElement(NULL);
+				tmpQueue.pop();
+				startNum--;
+			}
+			while (!tmpQueue.empty())
+			{
+				tmpQueue.front()->SetEndElement(NULL);
+				tmpQueue.pop();
+			}
+		}
+		currentd->Remove(currente);
+	}
+	delete currente;
+	//currente = NULL;
+	de->ClearCurrentE();
+	de->Redraw(false);
 }
 void EditTool::CreateNewDiagram(){
 	Diagram *oldD = currentd;
