@@ -38,6 +38,13 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 				d->FindStreams(elems);  // 查找路径并标记
 			}
 		}
+		else{
+			//this->ClearCurrentE();
+			de->ClearCurrentE();
+			de->ClearCurrentTool();
+			//de->Redraw(pos, 0, false);
+			//de->Redraw(false);
+		}
 		de->Redraw(false);
 		/*queue<DFDProcess*> mainfathers;
 		currentd->ClearOnRoute(mainfathers);
