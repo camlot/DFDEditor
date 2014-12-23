@@ -143,6 +143,8 @@ void DiagramEditor::RightPress(CPoint pos){
 	//edt->RightPress(pos, hWnd);
 	if (currenttool->GetType() == LOOKUPTOOL)  // 右击释放lookuptool并改为edittool
 	{
+		LookupTool *newlkt = (LookupTool*)currenttool;
+		newlkt->RightPress();
 		this->SetCurrentTool(edt);
 	}
 	EditTool *newet = (EditTool*)currenttool;
@@ -491,8 +493,8 @@ void DiagramEditor::EndCreate(Element *e){
 	void DiagramEditor::UpdatePosition(CPoint pos){
 	currente->Offset(pos);
 	}*/
-HWND DiagramEditor::SearchDiagramtoProcess(Diagram *&d){
-	HWND hWnd = currentd->SearchWnd(currente);
+HWND DiagramEditor::SearchDiagramtoProcess(Diagram *&d, DFDProcess *p){
+	HWND hWnd = currentd->SearchWnd(p);
 	if (hWnd) this->SearchDiagram(hWnd, d);  // d是返回值
 	return hWnd;
 	/*map<Element*, Diagram*>::iterator it;

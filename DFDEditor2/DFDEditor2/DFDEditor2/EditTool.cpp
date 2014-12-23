@@ -103,7 +103,7 @@ void EditTool::DoubleClick(CPoint pos, HWND hWnd){
 			if (currente->isProcess()){ // 如果该图元是Process
 				DFDProcess *temppe = (DFDProcess*)currente;  //
 				if (temppe->hasSubDiagram()){
-					h = de->SearchDiagramtoProcess(d);  //不能直接用currentd，因为此处指的是edittool的currente，变成功之后，diagrameditor中的currente没变，所以redraw时候set给doc的currente还是没变（因为用的是diagrameditor中的currente）
+					h = de->SearchDiagramtoProcess(d, temppe);  //不能直接用currentd，因为此处指的是edittool的currente，变成功之后，diagrameditor中的currente没变，所以redraw时候set给doc的currente还是没变（因为用的是diagrameditor中的currente）
 					this->OpenDiagramtoProcess(h, d);   //
 				}
 				//h = de->SearchDiagramtoProcess(d);

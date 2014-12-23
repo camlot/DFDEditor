@@ -12,6 +12,7 @@ class CMainFrame;
 class CChildFrame;
 class CDFDEditor2Doc;
 class CDFDEditor2View;
+class DFDProcess;
 
 
 #include<vector>
@@ -70,7 +71,7 @@ public:
 	void EndCreate(Element *e);
 	//void UpdateText(CString s);
 	//void UpdatePosition(CPoint pos);
-	HWND SearchDiagramtoProcess(Diagram *&d);
+	HWND SearchDiagramtoProcess(Diagram *&d, DFDProcess *p);
 	//void CreateDiagramtoProcess();
 };
 

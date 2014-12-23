@@ -40,7 +40,7 @@ HWND Diagram::getFatherWnd(){
 void Diagram::setFatherWnd(HWND hWnd){
 	this->fatherhWnd = hWnd;
 }
-HWND Diagram::SearchWnd(Element *e){
+HWND Diagram::SearchWnd(DFDProcess *e){
 	HWND hWnd = NULL;
 	map<Element*, HWND>::iterator it;
 	for (it = process2Diagram.begin(); it != process2Diagram.end(); it++){
@@ -318,6 +318,24 @@ void Diagram::FindEndElements(vector<Element*>& endElements)
 					}
 				}
 			}
+		}
+	}
+}
+
+void Diagram::ClearOnRoute(queue<DFDProcess*>& fathers)
+{
+	vector<Element*>::iterator it;
+	for (it = elems.begin(); it != elems.end(); it++)
+	{
+		if ((*it)->isProcess())
+		{
+			DFDProcess* tmpp = (DFDProcess*)(*it);
+			if (tmpp->getOnRoutes()) // 在本层的查找路径上，且有子图
+			{
+				tmpp->setOnRoutes(false);
+				fathers.push(tmpp);	
+			}
+			
 		}
 	}
 }

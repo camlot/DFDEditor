@@ -1,6 +1,7 @@
 #pragma once
 class Element;
 class Stream;
+class DFDProcess;
 #pragma warning (disable:4786)
 #include<vector>
 #include <queue>
@@ -27,8 +28,8 @@ public:
 	void Add(Element* e);  // 添加图元
 	bool Find(CPoint pos, Element *&e);  // 根据坐标查找图元
 	HWND getFatherWnd();
-	void setFatherWnd(HWND hWnd);
-	HWND SearchWnd(Element *e);  // 查找图元（Process）对应的窗口句柄
+	void setFatherWnd(HWND hWnd); 
+	HWND SearchWnd(DFDProcess *e); // 查找图元（Process）对应的窗口句柄
 	void SetElementforStreambyElement(Element *e, CPoint pos); // e是除stream类型其他类型时使用
 	void SetStartElementforStream(Stream *se, CPoint pos);  // e是stream类型时使用
 	void SetEndElementforStream(Stream *se, CPoint pos);
@@ -42,6 +43,7 @@ public:
 	void Highlight(CDC *pDC);  // 高亮路径
 	void ClearHighlight();  // 清除高亮
 	void FindEndElements(vector<Element*>& endElements);
+	void ClearOnRoute(queue<DFDProcess*>& fathers);
 };
 
 
