@@ -195,15 +195,15 @@ void Diagram::FindStreams(vector<Element*>& elemq) //传入EndElement传出所有Strea
 				tmp = (Stream*)(*it);
 				if (tmp->getStartElement() != NULL && !tmp->getStartElement()->isDataStorage())
 				{
-					if (tmp->getStartElement()->isProcess())
-					{
-						DFDProcess* tmpp = (DFDProcess*)tmp->getStartElement();
-						tmpp->setOnRoutes(true);
-					}
 					if (tmp->getEndElement() != NULL && tmp->getEndElement()->GetMidPoint() == elemq.front()->GetMidPoint())  // Stream终点图元为传入图元时
 					{
 						tmp->SetHighlightFlag(true);
 						//elemq.push_back(tmp);  //传出流
+						if (tmp->getStartElement()->isProcess())
+						{
+							DFDProcess* tmpp = (DFDProcess*)tmp->getStartElement();
+							tmpp->setOnRoutes(true);  // 设置Process在查找路径中为true
+						}
 						elemq.push_back(tmp->getStartElement());
 					}
 				}
@@ -330,7 +330,7 @@ void Diagram::ClearOnRoute(queue<DFDProcess*>& fathers)
 		if ((*it)->isProcess())
 		{
 			DFDProcess* tmpp = (DFDProcess*)(*it);
-			if (tmpp->getOnRoutes()) // 在本层的查找路径上，且有子图
+			if (tmpp->getOnRoutes()) // 在本层的查找路径上
 			{
 				tmpp->setOnRoutes(false);
 				fathers.push(tmpp);	

@@ -26,6 +26,7 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 	Diagram *d = NULL;
 	Element *e = NULL;
 	currentd->ClearHighlight();
+
 	this->Select(d, hWnd);  //根据窗口句柄找到图形
 	if (d){
 		de->SetCurrentD(d);  // 设置当前图形
@@ -33,49 +34,60 @@ void LookupTool::Press(CPoint pos, HWND hWnd){
 			de->SetCurrentE(e);
 			if (e->isSource())  // 点中Source（查找路径终点）
 			{
+				queue<DFDProcess*> mainfathers;
+				currentd->ClearOnRoute(mainfathers);
+				this->ClearProcessOnRoutes(mainfathers);
 				vector<Element*> elems;
 				elems.push_back(e);
 				d->FindStreams(elems);  // 查找路径并标记
 			}
 		}
 		else{
-			//this->ClearCurrentE();
+			queue<DFDProcess*> mainfathers;
+			currentd->ClearOnRoute(mainfathers);
+			this->ClearProcessOnRoutes(mainfathers);
+			d->ClearHighlight();
 			de->ClearCurrentE();
-			de->ClearCurrentTool();
-			//de->Redraw(pos, 0, false);
-			//de->Redraw(false);
+			//de->ClearCurrentTool();
 		}
 		de->Redraw(false);
-		/*queue<DFDProcess*> mainfathers;
-		currentd->ClearOnRoute(mainfathers);
-		this->ClearProcessOnRoutes(mainfathers);
-		de->SetCurrentE(e);*/
 	}
+
 }
 
-void LookupTool::DoubleClick(CPoint, HWND hWnd)
+void LookupTool::DoubleClick(CPoint pos, HWND hWnd)
 {
+	Diagram *d = NULL;
+	Element *e = NULL;
 	HWND h;
-	if (currente->isProcess())
-	{
-		DFDProcess *tmpp = (DFDProcess*)currente;  // 当前双击的图元是Process
-		if (tmpp->getOnRoutes())
-		{
-			if (tmpp->hasSubDiagram()){  // 如果Process有子图
-				h = de->SearchDiagramtoProcess(currentd, tmpp);  // 查找对应子图
-				this->OpenDiagramtoProcess(h, currentd);   // 打开当前子图
-				vector<Element*> endElems;
-				currentd->FindEndElements(endElems);
-				currentd->FindStreams(endElems);
-				de->Redraw(false);
-			}
-			else AfxMessageBox(_T("This process do not have sub-diagram!"));  // 如果没有子图弹窗提示没有
+	this->Select(d, hWnd);  //根据窗口句柄找到图形
+	if (d){
+		de->SetCurrentD(d);  // 设置当前图形
+		if (d->Find(pos, e)){
+			de->SetCurrentE(e);
+			if (currente->isProcess())
+			{
+				DFDProcess *tmpp = (DFDProcess*)currente;  // 当前双击的图元是Process
+				if (tmpp->getOnRoutes())
+				{
+					if (tmpp->hasSubDiagram()){  // 如果Process有子图
+						h = de->SearchDiagramtoProcess(currentd, tmpp);  // 查找对应子图
+						this->OpenDiagramtoProcess(h, currentd);   // 打开当前子图
+						vector<Element*> endElems;
+						currentd->FindEndElements(endElems);
+						currentd->FindStreams(endElems);
+						de->Redraw(false);
+					}
+					else AfxMessageBox(_T("This process do not have sub-diagram!"));  // 如果没有子图弹窗提示没有
+				}
+			}				
 		}
-		//queue<DFDProcess*> mainfathers;
-		//currentd->ClearOnRoute(mainfathers);
-		//this->ClearProcessOnRoutes(mainfathers);
+		else{
+			de->ClearCurrentE();
+			de->ClearCurrentTool();
+		}
+		de->Redraw(false);
 	}
-
 }
 
 void LookupTool::OpenDiagramtoProcess(HWND hWnd, Diagram *d)
@@ -99,17 +111,16 @@ void LookupTool::RightPress()
 
 void LookupTool::ClearProcessOnRoutes(queue<DFDProcess*>& fathers)
 {
-	//vector<DFDProcess*>::iterator it;
 	Diagram* tmpd = NULL;
 	while (!fathers.empty())
 	{
-		if (fathers.front()->hasSubDiagram())
+		if (fathers.front()->hasSubDiagram())  // 如果有子图
 		{
 			de->SearchDiagramtoProcess(tmpd, fathers.front());  // 寻找当前Process的子图
 			tmpd->ClearHighlight();
 			tmpd->ClearOnRoute(fathers);
-			fathers.pop();
-			ClearProcessOnRoutes(fathers);
 		}
+		fathers.pop();
+		ClearProcessOnRoutes(fathers);
 	}
 }

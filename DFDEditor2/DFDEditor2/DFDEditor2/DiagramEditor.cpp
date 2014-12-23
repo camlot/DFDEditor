@@ -190,34 +190,9 @@ void DiagramEditor::ExitEdit(){
 	}
 }
 void DiagramEditor::Remove(){
-	/*queue<Stream*> tmpQueue;
-	if (currente)  // 如果currente非空
-	{
-		//将所有与连接线相关的指针置空
-		if (!currente->isStream())
-		{
-			int startNum = currentd->FindStreams(currente, tmpQueue);
-			while (startNum > 0)
-			{
-				tmpQueue.front()->SetStartElement(NULL);
-				tmpQueue.pop();
-				startNum--;
-			}
-			while (!tmpQueue.empty())
-			{
-				tmpQueue.front()->SetEndElement(NULL);
-				tmpQueue.pop();
-			}
-		}
-		currentd->Remove(currente);
-	}
-	delete currente;
-	currente = NULL;
-	Redraw(false);
-	*/
 	if (currenttool->GetType() == EDITTOOL){
 		EditTool *newet = (EditTool*)currenttool;
-		newet->GotoFatherWnd();
+		newet->Remove();
 	}
 }
 /*void DiagramEditor::Redraw(CPoint pos,int type, bool highlight){
@@ -454,11 +429,6 @@ void DiagramEditor::Highlight(CDC *pDC){
 		this->Focus(pDC);
 	}
 	pDC->TextOutW(mp.x - 20, mp.y - 10, currente->GetText());
-	//if (currenttool->GetType() == LOOKUPTOOL)
-	//{
-	//	currentd->Highlight(pDC);
-	//	this->Focus(pDC);
-	//}
 }
 void DiagramEditor::Move(CPoint pos, CPoint oldpos){
 	currenttool->Move(pos, oldpos);
