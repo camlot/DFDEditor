@@ -19,7 +19,7 @@ public:
 	~LookupTool();
 	void Press(CPoint pos, HWND hWnd);
 	void RightPress();
-	void DoubleClick(CPoint, HWND hWnd);
+	void DoubleClick(CPoint pos, HWND hWnd);
 	void OpenDiagramtoProcess(HWND hWnd, Diagram *d);  // 打开Process的子图
 	void ClearProcessOnRoutes(queue<DFDProcess*>& fathers);
 };

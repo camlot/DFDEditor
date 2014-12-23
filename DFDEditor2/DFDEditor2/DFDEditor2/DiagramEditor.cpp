@@ -22,8 +22,6 @@ DiagramEditor::DiagramEditor()
 	currenttool = NULL;
 	cpMainFrame = NULL;
 	cpChildFrame = NULL;
-	//cpDoc = NULL;
-	//cpView = NULL;
 
 	rt = new RectangleTool(this);
 	et = new EllipseTool(this);
@@ -195,39 +193,19 @@ void DiagramEditor::Remove(){
 		newet->Remove();
 	}
 }
-/*void DiagramEditor::Redraw(CPoint pos,int type, bool highlight){
-	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
-	cpView->SetXY(pos.x, pos.y, type, highlight);
-	cpView->GetDocument()->d = currentd;
-	cpView->Invalidate();
-	}
-	void DiagramEditor::Redraw(){
-	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
-	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
-	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
-	cpView->GetDocument()->d = currentd;
-	cpView->Invalidate();
-	}*/
+
 void DiagramEditor::Redraw(bool original){
 	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
 	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
 	CDFDEditor2Doc *cpDoc = (CDFDEditor2Doc*)cpChildFrame->GetActiveDocument();
 	CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
 	CDC *pDC = new CDC();
-	//cpView->SetPos(pos);
-	cpDoc->SetOri(original);
-	//cpDoc->SetDiagram(currentd);
-	//cpView->GetDocument()->d = currentd;
+	cpDoc->SetOri(original);  // 设置是否正在创建图元的过程
 	cpDoc->SetDiagram(currentd);  // 修改当前活动窗口文档类Doc中的对应图形
 	cpDoc->SetElement(currente);  // 修改当前活动窗口文档类Doc中的对应活动图元
 	cpView->Invalidate();  // 重绘当前活动窗口
-	//cpView->UpdateWindow();
-	//cpView->OnDraw(pDC);
 }
 void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos, CDC *pDC){
-	//cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
-	//cpDoc = (CDFDEditor2Doc*)cpChildFrame->GetActiveDocument();
-	//cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
 	if (!currente && original && (currenttool == rt || currenttool == et || currenttool == lt || currenttool == st)){
 		this->DrawOriginal(pDC, pos);  //需要各种createtool的头一个操作是clearelement 
 	}
@@ -248,18 +226,15 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 			switch ((*it2)){
 			case 1:
 				pDC->Rectangle((*it1).x - 60, (*it1).y - 40, (*it1).x + 60, (*it1).y + 40);
-				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				break;
 			case 2:
 				pDC->Ellipse((*it1).x - 50, (*it1).y - 50, (*it1).x + 50, (*it1).y + 50);
-				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				break;
 			case 3:
 				pDC->MoveTo((*it1).x - 60, (*it1).y + 20);
 				pDC->LineTo((*it1).x + 60, (*it1).y + 20);
 				pDC->MoveTo((*it1).x - 60, (*it1).y + 40);
 				pDC->LineTo((*it1).x + 60, (*it1).y + 40);
-				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				break;
 			case 4:
 				pDC->MoveTo(startmidend[i][0].x, startmidend[i][0].y);//起始点
@@ -294,9 +269,6 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 
 					}
 				}
-
-
-				//pDC->TextOutW((*it1).x - 20, (*it1).y, (*it3));
 				i++;
 				break;
 			default:;
@@ -312,16 +284,8 @@ void DiagramEditor::Draw(Element *doce, Diagram *docd, bool original, CPoint pos
 		this->SetCurrentE(doce);
 		this->Highlight(pDC);
 	}
-	//if (currente && cpChildFrame == (CChildFrame*)cpMainFrame->GetActiveFrame()){
-	//this->Highlight(pDC);
-	//}
-
 }
 void DiagramEditor::DrawOriginal(CDC *pDC, CPoint pos){
-	//if (highlight){
-	//pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
-	//MemDC.SelectObject(pen);
-	//}
 	if (currenttool == rt){
 		pDC->Rectangle(pos.x - 60, pos.y - 40, pos.x + 60, pos.y + 40);
 	}
@@ -348,27 +312,7 @@ void DiagramEditor::DrawOriginal(CDC *pDC, CPoint pos){
 
 	}
 	else{}
-	/*switch (type){
-	case 1: pDC->Rectangle(pos.x - 60, pos.y - 40, pos.x + 60, pos.y + 40);
-	break;
-	case 2: pDC->Ellipse(pos.x - 50, pos.y - 50, pos.x + 50, pos.y + 50);
-	break;
-	case 3: pDC->MoveTo(pos.x - 60, pos.y + 20);
-	pDC->LineTo(pos.x + 60, pos.y + 20);
-	pDC->MoveTo(pos.x - 60, pos.y + 40);
-	pDC->LineTo(pos.x + 60, pos.y + 40);
-	break;
-	case 4: pDC->MoveTo(pos.x - 60, pos.y - 40);
-	pDC->LineTo(pos.x - 60, pos.y);
-	pDC->LineTo(pos.x + 60, pos.y);
-	pDC->LineTo(pos.x + 60, pos.y + 40);
-	break;
-	default:;
-	}*/
 }
-/*void DiagramEditor::Highlight(){
-	this->Redraw(currente->midPoint, currente->type, true);
-	}*/
 void DiagramEditor::Highlight(CDC *pDC){
 	CPen *pen = new CPen(PS_SOLID, 5, RGB(255, 0, 0));
 	pDC->SelectObject(pen);
@@ -438,7 +382,6 @@ void DiagramEditor::Focus(CDC *pDC){
 	CPen *pen = new CPen(PS_SOLID, 2, RGB(255, 0, 0));
 	pDC->SelectObject(pen);
 	pDC->Rectangle(tempse->GetStart().x - 5, tempse->GetStart().y - 5, tempse->GetStart().x + 5, tempse->GetStart().y + 5);
-	//pen->CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
 	pen = new CPen(PS_SOLID, 2, RGB(0, 0, 255));
 	pDC->SelectObject(pen);
 
@@ -449,41 +392,12 @@ void DiagramEditor::Focus(CDC *pDC){
 	pDC->Rectangle(tempse->GetEnd().x - 5, tempse->GetEnd().y - 5, tempse->GetEnd().x + 5, tempse->GetEnd().y + 5);
 }
 void DiagramEditor::EndCreate(Element *e){
-	//currentd->add(e);
-	//currenttool->SetCurrentE(e);
 	this->SetCurrentE(e);
-	//Highlight();
 	this->Redraw(false);
-	//CDFDEditor2View *cpView = (CDFDEditor2View*)cpChildFrame->GetActiveView();
-	//cpView->Invalidate();
 }
-/*void DiagramEditor::UpdateText(CString s){
-	currente->SetText(s);
-	}
-	void DiagramEditor::UpdatePosition(CPoint pos){
-	currente->Offset(pos);
-	}*/
+
 HWND DiagramEditor::SearchDiagramtoProcess(Diagram *&d, DFDProcess *p){
 	HWND hWnd = currentd->SearchWnd(p);
 	if (hWnd) this->SearchDiagram(hWnd, d);  // d是返回值
 	return hWnd;
-	/*map<Element*, Diagram*>::iterator it;
-	for (it = ElementtoDiagram.begin(); it != ElementtoDiagram.end(); it++){
-	if (it->first == currente){
-	d = it->second;
-	}
-	break;
-	}*/
 }
-/*void DiagramEditor::CreateDiagramtoProcess(){
-	Diagram *oldD = currentd;
-	::SendMessage(::AfxGetMainWnd()->m_hWnd, WM_COMMAND, ID_FILE_NEW, 0);
-	cpMainFrame = (CMainFrame*)AfxGetMainWnd();
-	cpChildFrame = (CChildFrame*)cpMainFrame->GetActiveFrame();
-	HWND hWnd = cpChildFrame->m_hWnd;
-	if (!hWnd) AfxMessageBox(_T("Top Window Not found!"));
-
-	oldD->InsertMap(currente, hWnd);
-	currente->setSubDiagram();
-	ClearCurrentE();
-	}*/

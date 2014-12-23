@@ -42,8 +42,8 @@ public:
 	void FindStreams(vector<Element*>& elemq);  // 查找路径-找到该图中的连接线
 	void Highlight(CDC *pDC);  // 高亮路径
 	void ClearHighlight();  // 清除高亮
-	void FindEndElements(vector<Element*>& endElements);
-	void ClearOnRoute(queue<DFDProcess*>& fathers);
+	void FindEndElements(vector<Element*>& endElements);  // 查找所有终点图元（只能是右边无连接的Source）
+	void ClearOnRoute(queue<DFDProcess*>& fathers);  // 清除当前图形中的Process标志位并返回
 };
 
 

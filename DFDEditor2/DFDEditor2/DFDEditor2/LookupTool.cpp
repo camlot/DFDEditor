@@ -80,7 +80,7 @@ void LookupTool::DoubleClick(CPoint pos, HWND hWnd)
 					}
 					else AfxMessageBox(_T("This process do not have sub-diagram!"));  // 如果没有子图弹窗提示没有
 				}
-			}				
+			}
 		}
 		else{
 			de->ClearCurrentE();
@@ -93,12 +93,11 @@ void LookupTool::DoubleClick(CPoint pos, HWND hWnd)
 void LookupTool::OpenDiagramtoProcess(HWND hWnd, Diagram *d)
 {
 	CChildFrame *pcProcessFrame = (CChildFrame*)CChildFrame::FromHandle(hWnd);
-	pcProcessFrame->MDIActivate();
-	ShowWindow(hWnd, SW_SHOWNORMAL);
-	de->ClearCurrentE();
-
-	de->SetCurrentD(d);
-	de->Redraw(false);
+	pcProcessFrame->MDIActivate();  // 激活窗口
+	ShowWindow(hWnd, SW_SHOWNORMAL);  // 显示窗口
+	de->ClearCurrentE();  // 清除当前保存的elements（上一张图的process）
+	de->SetCurrentD(d);  // 设置当前图形为d
+	de->Redraw(false);  // 重绘
 }
 
 void LookupTool::RightPress()
@@ -114,12 +113,9 @@ void LookupTool::ClearProcessOnRoutes(queue<DFDProcess*>& fathers)
 	Diagram* tmpd = NULL;
 	while (!fathers.empty())
 	{
-		if (fathers.front()->hasSubDiagram())  // 如果有子图
-		{
-			de->SearchDiagramtoProcess(tmpd, fathers.front());  // 寻找当前Process的子图
-			tmpd->ClearHighlight();
-			tmpd->ClearOnRoute(fathers);
-		}
+		de->SearchDiagramtoProcess(tmpd, fathers.front());  // 寻找当前Process的子图
+		tmpd->ClearHighlight();
+		tmpd->ClearOnRoute(fathers);
 		fathers.pop();
 		ClearProcessOnRoutes(fathers);
 	}

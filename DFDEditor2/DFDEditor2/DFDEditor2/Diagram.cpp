@@ -333,7 +333,10 @@ void Diagram::ClearOnRoute(queue<DFDProcess*>& fathers)
 			if (tmpp->getOnRoutes()) // 在本层的查找路径上
 			{
 				tmpp->setOnRoutes(false);
-				fathers.push(tmpp);	
+				if (tmpp->hasSubDiagram())
+				{
+					fathers.push(tmpp);
+				}
 			}
 			
 		}

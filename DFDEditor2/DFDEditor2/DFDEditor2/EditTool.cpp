@@ -204,15 +204,11 @@ void EditTool::RightRelease(CPoint pos){
 	CDlg dlg; 
 	int response = dlg.DoModal();
 	if (response == IDOK){
-		//de->UpdateText(dlg.newtext);
 		if (dlg.newtext != _T("")){
 			currente->SetText(dlg.newtext);
 		}
-		//currente->SetText(dlg.newtext);
 	}
-	//de->Highlight();
 	de->Redraw(false);
-
 }
 void EditTool::GotoFatherWnd(){
 	HWND hWnd = currentd->getFatherWnd();
@@ -248,7 +244,6 @@ void EditTool::Remove(){
 		currentd->Remove(currente);
 	}
 	delete currente;
-	//currente = NULL;
 	de->ClearCurrentE();
 	de->Redraw(false);
 }
@@ -273,7 +268,6 @@ void EditTool::OpenDiagramtoProcess(HWND hWnd, Diagram *d){
 	CChildFrame *pcProcessFrame = (CChildFrame*)CChildFrame::FromHandle(hWnd);
 	pcProcessFrame->MDIActivate();
 	ShowWindow(hWnd, SW_SHOWNORMAL);
-
 	//this->SetCurrentD(d);
 	de->ClearCurrentE();
 	de->SetCurrentD(d);
